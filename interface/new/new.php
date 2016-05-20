@@ -6,6 +6,9 @@ if ($GLOBALS['full_new_patient_form']) {
   exit;
 }
 
+require_once("$srcdir/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 // For a layout field return 0=unused, 1=optional, 2=mandatory.
 function getLayoutUOR($form_id, $field_id) {
   $crow = sqlQuery("SELECT uor FROM layout_options WHERE " .
@@ -198,7 +201,7 @@ while ($orow = sqlFetchArray($ores)) {
     id='img_dob' border='0' alt='[?]' style='cursor:pointer'
     title='Click here to choose a date'>
    <script LANGUAGE="JavaScript">
-    Calendar.setup({inputField:"DOB", ifFormat:"%Y-%m-%d", button:"img_dob"});
+    Calendar.setup({inputField:"DOB", ifFormat:"<?php echo $DateFormat; ?>", button:"img_dob"});
    </script>
   </td>
  </tr>
@@ -216,7 +219,7 @@ while ($orow = sqlFetchArray($ores)) {
     id='img_regdate' border='0' alt='[?]' style='cursor:pointer'
     title='Click here to choose a date'>
    <script LANGUAGE="JavaScript">
-    Calendar.setup({inputField:"regdate", ifFormat:"%Y-%m-%d", button:"img_regdate"});
+    Calendar.setup({inputField:"regdate", ifFormat:"<?php echo $DateFormat; ?>", button:"img_regdate"});
    </script>
   </td>
  </tr>

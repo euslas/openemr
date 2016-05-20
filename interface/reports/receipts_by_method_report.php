@@ -23,6 +23,9 @@ require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 require_once("../../custom/code_types.inc.php");
 
+/** Current format date */
+$DateFormat = DateFormatRead();
+
 // This controls whether we show pt name, policy number and DOS.
 $showing_ppd = true;
 
@@ -165,8 +168,8 @@ function payerCmp($a, $b) {
 if (! acl_check('acct', 'rep')) die(xl("Unauthorized access."));
 
 
-$form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-$form_to_date   = fixDate($_POST['form_to_date']  , date('Y-m-d'));
+$from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
+$to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
 $form_use_edate = $_POST['form_use_edate'];
 $form_facility  = $_POST['form_facility'];
 $form_report_by = $_POST['form_report_by'];
@@ -386,9 +389,6 @@ function sel_procedure() {
 
 
 if ($_POST['form_refresh']) {
-  $from_date = $form_from_date;
-  $to_date   = $form_to_date;
-
   $paymethod   = "";
   $paymethodleft = "";
   $methodpaytotal = 0;
@@ -592,8 +592,8 @@ if ($_POST['form_refresh']) {
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_to_date"});
 </script>
 
 </html>

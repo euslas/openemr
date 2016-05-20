@@ -17,6 +17,17 @@ function oeFormatMoney($amount, $symbol=false) {
   return $s;
 }
 
+function oeFormatDateForPrintReport($date)
+{
+    if ($date) {
+        $dmy = preg_split("'[/.-]'", $date);
+        if ($GLOBALS['date_display_format'] == 2) {
+            $date = sprintf("%02u-%02u-%04u", $dmy[0], $dmy[1], $dmy[2]);
+        }
+        return $date;
+    }
+}
+
 function oeFormatShortDate($date='today') {
   if ($date === 'today') $date = date('Y-m-d');
   if (strlen($date) == 10) {
@@ -25,6 +36,18 @@ function oeFormatShortDate($date='today') {
       $date = substr($date, 5, 2) . '/' . substr($date, 8, 2) . '/' . substr($date, 0, 4);
     else if ($GLOBALS['date_display_format'] == 2) // dd/mm/yyyy
       $date = substr($date, 8, 2) . '/' . substr($date, 5, 2) . '/' . substr($date, 0, 4);
+  }
+  return $date;
+}
+
+function oeFormatDateTime($date='today') {
+  if ($date === 'today') $date = date('Y-m-d H:i:s');
+  if (strlen($date) == 19) {
+    // assume input is yyyy-mm-dd hh:mm:ss
+    if ($GLOBALS['date_display_format'] == 1)      // mm/dd/yyyy hh:mm:ss
+      $date = substr($date, 5, 2) . '/' . substr($date, 8, 2) . '/' . substr($date, 0, 4) . substr($date, 10, 9);
+    else if ($GLOBALS['date_display_format'] == 2) // dd/mm/yyyy hh:mm:ss
+      $date = substr($date, 8, 2) . '/' . substr($date, 5, 2) . '/' . substr($date, 0, 4) . substr($date, 10, 9);
   }
   return $date;
 }
@@ -72,23 +95,27 @@ function oeFormatClientID($id) {
   return $id;
 }
 //----------------------------------------------------
-function DateFormatRead()
+/**
+ * @param bool $flag Without % or with
+ * @return string
+ */
+function DateFormatRead($flag = false)
  {//For the 3 supported date format,the javascript code also should be twicked to display the date as per it.
   //Output of this function is given to 'ifFormat' parameter of the 'Calendar.setup'.
   //This will show the date as per the global settings.
-	if($GLOBALS['date_display_format']==0)
-	 {
-	  return "%Y-%m-%d";
-	 }
-	else if($GLOBALS['date_display_format']==1)
-	 {
-	  return "%m/%d/%Y";
-	 }
-	else if($GLOBALS['date_display_format']==2)
-	 {
-	  return "%d/%m/%Y";
-	 }
+     if ($GLOBALS['date_display_format'] == 0) {
+         return (!$flag) ? "%Y-%m-%d" : "Y-m-d";
+     } else {
+         if ($GLOBALS['date_display_format'] == 1) {
+             return (!$flag) ? "%m/%d/%Y" : "m/d/Y";
+         } else {
+             if ($GLOBALS['date_display_format'] == 2) {
+                 return (!$flag) ? "%d/%m/%Y" : "d/m/Y";
+             }
+         }
+     }
  }
+
 function DateToYYYYMMDD($DateValue)
  {//With the help of function DateFormatRead() now the user can enter date is any of the 3 formats depending upon the global setting.
  //But in database the date can be stored only in the yyyy-mm-dd format.

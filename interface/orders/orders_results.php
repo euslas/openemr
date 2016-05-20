@@ -15,6 +15,8 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("../orders/lab_exchange_tools.php");
 
+$DateFormat = DateFormatRead();
+
 // Indicates if we are entering in batch mode.
 $form_batch = empty($_GET['batch']) ? 0 : 1;
 
@@ -740,9 +742,9 @@ else {
 
 <?php if ($form_batch) { ?>
 // Initialize calendar widgets for "from" and "to" dates.
-Calendar.setup({inputField:'form_from_date', ifFormat:'%Y-%m-%d',
+Calendar.setup({inputField:'form_from_date', ifFormat:'<?php echo $DateFormat; ?>',
  button:'img_from_date'});
-Calendar.setup({inputField:'form_to_date', ifFormat:'%Y-%m-%d',
+Calendar.setup({inputField:'form_to_date', ifFormat:'<?php echo $DateFormat; ?>',
  button:'img_to_date'});
 <?php } ?>
 
@@ -750,9 +752,9 @@ Calendar.setup({inputField:'form_to_date', ifFormat:'%Y-%m-%d',
 var f = document.forms[0];
 for (var lino = 0; f['form_line['+lino+']']; ++lino) {
  if (f['form_date_report['+lino+']']) {
-  Calendar.setup({inputField:'form_date_report['+lino+']', ifFormat:'%Y-%m-%d %H:%M',
+  Calendar.setup({inputField:'form_date_report['+lino+']', ifFormat: "<?= $DateFormat?> %H:%M",
    button:'q_date_report['+lino+']', showsTime:true});
-  Calendar.setup({inputField:'form_date_collected['+lino+']', ifFormat:'%Y-%m-%d %H:%M',
+  Calendar.setup({inputField:'form_date_collected['+lino+']', ifFormat: "<?= $DateFormat?> %H:%M",
    button:'q_date_collected['+lino+']', showsTime:true});
  }
 }

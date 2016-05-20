@@ -28,6 +28,9 @@
  include_once("../../globals.php");
  include_once("$srcdir/patient.inc");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
  // check access controls
  if (!acl_check('patients','appt','',array('write','wsome') ))
   die(xlt('Access not allowed'));
@@ -379,7 +382,7 @@ form {
 <div id="searchCriteria">
 <form method='post' name='theform' action='find_appt_popup.php?providerid=<?php echo attr($providerid) ?>&catid=<?php echo attr($input_catid) ?>'>
    <?php echo xlt('Start date:'); ?>
-   <input type='text' name='startdate' id='startdate' size='10' value='<?php echo attr($sdate) ?>'
+   <input type='text' name='startdate' id='startdate' size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($sdate))) ?>'
     title='<?php echo xla('yyyy-mm-dd starting date for search'); ?> '/>
    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
     id='img_date' border='0' alt='[?]' style='cursor:pointer'
@@ -470,7 +473,7 @@ form {
 
 <!-- for the pop up calendar -->
 <script language='JavaScript'>
- Calendar.setup({inputField:"startdate", ifFormat:"%Y-%m-%d", button:"img_date"});
+ Calendar.setup({inputField:"startdate", ifFormat:"<?php echo $DateFormat?>", button:"img_date"});
 
 // jQuery stuff to make the page a little easier to use
 

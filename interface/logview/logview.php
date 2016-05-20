@@ -3,6 +3,10 @@ include_once("../globals.php");
 include_once("$srcdir/log.inc");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
+
+/** Current format of date  */
+$DateFormat = DateFormatRead();
+
 ?>
 <html>
 <head>
@@ -400,8 +404,8 @@ $(document).ready(function(){
 
 
 /* required for popup calendar */
-Calendar.setup({inputField:"start_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:true});
-Calendar.setup({inputField:"end_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date", showsTime:true});
+Calendar.setup({inputField:"start_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_begin_date", showsTime:true});
+Calendar.setup({inputField:"end_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_end_date", showsTime:true});
 
 </script>
 

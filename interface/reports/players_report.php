@@ -22,6 +22,10 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/lists.inc");
 require_once("$srcdir/calendar_events.inc.php");
+require_once("$srcdir/formatting.inc.php");
+
+/** Current format date */
+$DateFormat = DateFormatRead();
 
 // Temporary variable while new "propagation" logic is being tested.
 // True means that missing days in the daily_fitness table default to
@@ -473,7 +477,7 @@ if ($alertmsg) {
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language="Javascript">
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+ Calendar.setup({inputField:"form_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_date"});
 </script>
 </body>
 </html>

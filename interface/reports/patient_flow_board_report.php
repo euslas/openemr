@@ -39,6 +39,8 @@ require_once "$srcdir/formdata.inc.php";
 require_once "$srcdir/appointments.inc.php";
 require_once("$srcdir/patient_tracker.inc.php");
 
+$DateFormat = DateFormatRead();
+
 $patient = $_REQUEST['patient'];
 
 if ($patient && ! $_POST['form_from_date']) {
@@ -161,7 +163,9 @@ if ($form_patient == '' ) $form_pid = '';
 <?php } ?>
 
 
-<div id="report_parameters_daterange"><?php echo date("d F Y", strtotime($from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($to_date)); #sets date range for calendars ?>
+<div id="report_parameters_daterange">
+    <?= date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
 <form method='post' name='theform' id='theform' action='patient_flow_board_report.php' onsubmit='return top.restoreSession()'>
@@ -208,7 +212,7 @@ if ($form_patient == '' ) $form_pid = '';
             <tr>
                 <td class='label'><?php echo xlt('From'); ?>:</td>
                 <td><input type='text' name='form_from_date' id="form_from_date"
-                    size='10' value='<?php echo attr($from_date) ?>'
+                    size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($from_date))) ?>'
                     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
                     title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
                     align='absbottom' width='24' height='22' id='img_from_date'
@@ -216,7 +220,7 @@ if ($form_patient == '' ) $form_pid = '';
                     title='<?php echo xlt('Click here to choose a date'); ?>'></td>
                 <td class='label'><?php echo xlt('To'); ?>:</td>
                 <td><input type='text' name='form_to_date' id="form_to_date"
-                    size='10' value='<?php echo attr($to_date) ?>'
+                    size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($to_date))) ?>'
                     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
                     title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
                     align='absbottom' width='24' height='22' id='img_to_date'
@@ -474,7 +478,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         <td class="detail">&nbsp;<?php echo ($docname == $lastdocname) ? "" : $docname ?>
         </td>
 
-        <td class="detail"><?php echo text(oeFormatShortDate($appointment['pc_eventDate'])) ?>
+        <td class="detail"><?= text(date(DateFormatRead(true) . ' H:i:s', strtotime($appointment['pc_eventDate']))); ?>
         </td>
         
         <td class="detail"><?php echo text(oeFormatTime($appointment['pc_startTime'])) ?>
@@ -601,7 +605,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         <td class="detail">&nbsp;<?php echo ($docname == $lastdocname) ? "" : $docname ?>
         </td>
 
-        <td class="detail"><?php echo text(oeFormatShortDate($appointment['pc_eventDate'])) ?>
+        <td class="detail"><?= text(date(DateFormatRead(true) . ' H:i:s', strtotime($appointment['pc_eventDate']))); ?>
         </td>
 
         <td class="detail"><?php echo text(oeFormatTime($appointment['pc_startTime'])) ?>
@@ -662,8 +666,8 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
 <script type="text/javascript"
     src="../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat?>", button:"img_to_date"});
 </script>
 
 </html>

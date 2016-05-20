@@ -4,6 +4,11 @@ include_once ($depth.'interface/globals.php');
 include_once($depth.'library/formdata.inc.php');
 include_once ($depth.'library/classes/class.ezpdf.php');
 include_once("content_parser.php");
+require_once("$srcdir/formatting.inc.php");
+
+/** Current format date */
+$DateFormat = DateFormatRead();
+
 ?>
 <?php
 if (!($_POST['submit_pdf'] || $_POST['submit_html']) && ($_GET['pid'] && $_GET['encounter'])) {
@@ -56,7 +61,7 @@ title='<?php xl('yyyy-mm-dd last date of this event','e'); ?>' />
 id='img_start' border='0' alt='[?]' style='cursor:pointer'
 title='<?php xl('Click here to choose a date','e'); ?>'>
 <script>
-Calendar.setup({inputField:'start', ifFormat:'%Y-%m-%d', button:'img_start'});
+Calendar.setup({inputField:'start', ifFormat:"<?= $DateFormat ?>", button:'img_start'});
 </script>
 </td></tr>
 
@@ -70,7 +75,7 @@ title='<?php xl('yyyy-mm-dd last date of this event','e'); ?>' />
 id='img_end' border='0' alt='[?]' style='cursor:pointer'
 title='<?php xl('Click here to choose a date','e'); ?>'>
 <script>
-Calendar.setup({inputField:'end', ifFormat:'%Y-%m-%d', button:'img_end'});
+Calendar.setup({inputField:'end', ifFormat:"<?= $DateFormat ?>", button:'img_end'});
 </script>
 </td></tr>
 <tr><td></td><td></td></tr>

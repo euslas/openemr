@@ -31,6 +31,10 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
 //
 //include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php");
 //
+
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -156,8 +160,8 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
                         </td>
                         
                         <script type="text/javascript"> 
-                            Calendar.setup({inputField:"caldte1", ifFormat:"%Y-%m-%d", button:"csvdate1_cal"});
-                            Calendar.setup({inputField:"caldte2", ifFormat:"%Y-%m-%d", button:"csvdate2_cal"});
+                            Calendar.setup({inputField:"caldte1", ifFormat:"<?php echo $DateFormat; ?>", button:"csvdate1_cal"});
+                            Calendar.setup({inputField:"caldte2", ifFormat:"<?php echo $DateFormat; ?>", button:"csvdate2_cal"});
                         </script>
                         <!--
 						<td align='left'>

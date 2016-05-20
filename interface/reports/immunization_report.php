@@ -12,6 +12,8 @@ require_once("../globals.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 
+$DateFormat = DateFormatRead();
+
 if(isset($_POST['form_from_date'])) {
   $from_date = $_POST['form_from_date'] !== "" ? 
     fixDate($_POST['form_from_date'], date('Y-m-d')) :
@@ -293,7 +295,8 @@ if ($_POST['form_get_hl7']==='true') {
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Immunization Registry','e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+    <?= date("d F Y", strtotime(oeFormatDateForPrintReport($form_from_date)))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($form_to_date))); ?>
 </div>
 
 <form name='theform' id='theform' method='post' action='immunization_report.php'
@@ -435,7 +438,7 @@ onsubmit='return top.restoreSession()'>
    <?php echo htmlspecialchars($row['immunizationtitle']) ?>
   </td>
   <td>
-   <?php echo htmlspecialchars($row['immunizationdate']) ?>
+   <?= date(DateFormatRead(true) . ' H:i:s', strtotime(htmlspecialchars($row['immunizationdate']))); ?>
   </td>
  </tr>
 <?php
@@ -461,8 +464,8 @@ onsubmit='return top.restoreSession()'>
 </form>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat?>", button:"img_to_date"});
 </script>
 
 </body>

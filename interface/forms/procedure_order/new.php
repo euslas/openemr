@@ -29,6 +29,9 @@ require_once("../../orders/qoe.inc.php");
 require_once("../../orders/gen_hl7_order.inc.php");
 require_once("../../../custom/code_types.inc.php");
 
+/** Current format date */
+$DateFormat = DateFormatRead();
+
 // Defaults for new orders.
 $row = array(
   'provider_id' => $_SESSION['authUserID'],
@@ -583,9 +586,9 @@ if ($qoe_init_javascript)
 </center>
 
 <script language='JavaScript'>
-Calendar.setup({inputField:'form_date_ordered', ifFormat:'%Y-%m-%d',
+Calendar.setup({inputField:'form_date_ordered', ifFormat:"<?= $DateFormat ?>",
  button:'img_date_ordered'});
-Calendar.setup({inputField:'form_date_collected', ifFormat:'%Y-%m-%d %H:%M',
+Calendar.setup({inputField:'form_date_collected', ifFormat:"<?= $DateFormat ?> %H:%M",
  button:'img_date_collected', showsTime:true});
 </script>
 

@@ -22,6 +22,8 @@ require_once "$srcdir/formdata.inc.php";
 require_once "$srcdir/clinical_rules.php";
 require_once "$srcdir/report_database.inc";
 
+$DateFormat = DateFormatRead();
+
 // This is only pertinent for users of php versions less than 5.2
 //  (ie. this wrapper is only loaded when php version is less than
 //   5.2; otherwise the native php json functions are used)
@@ -36,7 +38,7 @@ $back_link = (isset($_GET['back'])) ? trim($_GET['back']) : "";
 // If showing an old report, then collect information
 if (!empty($report_id)) {
   $report_view = collectReportDatabase($report_id);
-  $date_report = $report_view['date_report'];
+  $date_report = date(DateFormatRead(true) . ' H:i:s', strtotime($report_view['date_report']));
   $type_report = $report_view['type'];
   
   $type_report = (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014")  || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2") ||
@@ -71,7 +73,7 @@ else {
     $begin_date = (isset($_POST['form_begin_date'])) ? trim($_POST['form_begin_date']) : "";
     $labs_manual = (isset($_POST['labs_manual_entry'])) ? trim($_POST['labs_manual_entry']) : "0";
   }
-  $target_date = (isset($_POST['form_target_date'])) ? trim($_POST['form_target_date']) : date('Y-m-d H:i:s');
+  $target_date = (isset($_POST['form_target_date'])) ? trim($_POST['form_target_date']) : date(DateFormatRead(true) . ' H:i:s');
   $rule_filter = (isset($_POST['form_rule_filter'])) ? trim($_POST['form_rule_filter']) : "";
   $plan_filter = (isset($_POST['form_plan_filter'])) ? trim($_POST['form_plan_filter']) : "";
   $organize_method = (empty($plan_filter)) ? "default" : "plans";
@@ -360,7 +362,7 @@ else {
                          <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES); ?>:
                       </td>
                       <td>
-                         <input <?php echo $dis_text; ?> type='text' name='form_begin_date' id="form_begin_date" size='20' value='<?php echo htmlspecialchars( $begin_date, ENT_QUOTES); ?>'
+                         <input <?php echo $dis_text; ?> type='text' name='form_begin_date' id="form_begin_date" size='20' value='<?= htmlspecialchars($begin_date); ?>'
                             onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
                           <?php if (empty($report_id)) { ?>
                            <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -380,7 +382,7 @@ else {
                            <?php } ?>
                         </td>
                         <td>
-                           <input <?php echo $dis_text; ?> type='text' name='form_target_date' id="form_target_date" size='20' value='<?php echo htmlspecialchars( $target_date, ENT_QUOTES); ?>'
+                           <input <?php echo $dis_text; ?> type='text' name='form_target_date' id="form_target_date" size='20' value='<?= htmlspecialchars($target_date); ?>'
                                 onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
                            <?php if (empty($report_id)) { ?>
                              <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -851,9 +853,9 @@ else {
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language="Javascript">
  <?php if ($type_report == "amc" || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2") ) { ?>
-  Calendar.setup({inputField:"form_begin_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:'true'});
+  Calendar.setup({inputField:"form_begin_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_begin_date", showsTime:'true'});
  <?php } ?>
- Calendar.setup({inputField:"form_target_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_target_date", showsTime:'true'});
+ Calendar.setup({inputField:"form_target_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_target_date", showsTime:'true'});
 </script>
 
 </html>

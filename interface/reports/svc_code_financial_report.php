@@ -37,6 +37,9 @@ require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 require_once "$srcdir/appointments.inc.php";
 
+/** Current format date */
+$DateFormat = DateFormatRead();
+
 $grand_total_units  = 0;
 $grand_total_amt_billed  = 0;
 $grand_total_amt_paid  = 0;
@@ -46,8 +49,11 @@ $grand_total_amt_balance  = 0;
 
   if (! acl_check('acct', 'rep')) die(xlt("Unauthorized access."));
 
-  $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-  $form_to_date   = fixDate($_POST['form_to_date']  , date('Y-m-d'));
+if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($_POST['form_to_date']) && $_POST['form_from_date']) {
+    $form_from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
+    $form_to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
+}
+
   $form_facility  = $_POST['form_facility'];
   $form_provider  = $_POST['form_provider'];
 
@@ -147,7 +153,8 @@ $grand_total_amt_balance  = 0;
 		</tr><tr>
                  <td colspan="2">
                           <?php echo xlt('From'); ?>:&nbsp;&nbsp;&nbsp;&nbsp;
-                           <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo attr($form_from_date) ?>'
+                           <input type='text' name='form_from_date' id="form_from_date" size='10'
+                                  value='<?= ($form_from_date) ? oeFormatShortDate(attr($form_from_date)) : ''; ?>'
                                 onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
                            <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
                                 id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
@@ -157,7 +164,8 @@ $grand_total_amt_balance  = 0;
                            <?php echo xlt('To'); ?>:
                         </td>
                         <td>
-                           <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo attr($form_to_date) ?>'
+                           <input type='text' name='form_to_date' id="form_to_date" size='10'
+                                  value='<?= ($form_to_date) ? oeFormatShortDate(attr($form_to_date)) : ''; ?>'
                                 onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
                            <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
                                 id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
@@ -363,8 +371,8 @@ if (!$_POST['form_refresh'] && !$_POST['form_csvexport']) { ?>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_to_date"});
  top.restoreSession();
 </script>
 </html>

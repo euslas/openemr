@@ -15,6 +15,9 @@
  require_once("$srcdir/formdata.inc.php");
  require_once("$srcdir/htmlspecialchars.inc.php");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
  function QuotedOrNull($fld) {
   if ($fld) return "'".add_escape_custom($fld)."'";
   return "NULL";
@@ -113,7 +116,7 @@ td { font-size:10pt; }
   <td valign='top' nowrap><b><?php echo xlt('Date Destroyed'); ?>:</b></td>
   <td>
    <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo $row['destroy_date'] ? attr($row['destroy_date']) : date("Y-m-d"); ?>'
+    value='<?php echo $row['destroy_date'] ? htmlspecialchars(oeFormatShortDate(attr($row['destroy_date']))) : htmlspecialchars(oeFormatShortDate(date("Y-m-d"))); ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
     title='<?php echo xla('yyyy-mm-dd date destroyed'); ?>' />
    <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -158,7 +161,7 @@ td { font-size:10pt; }
 </center>
 </form>
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+ Calendar.setup({inputField:"form_date", ifFormat:"<?php echo $DateFormat?>", button:"img_date"});
 </script>
 </body>
 </html>

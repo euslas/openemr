@@ -29,6 +29,9 @@ require_once("$srcdir/forms.inc");
 require_once("$srcdir/acl.inc");
 formHeader("Form: Track anything");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 // check if we are inside an encounter
 if (! $encounter) { // comes from globals.php
  die("Internal error: we do not seem to be in an encounter!");
@@ -195,13 +198,13 @@ if ($formid){
 
 	echo "<tr><td>" . xlt('Date Time') . "</td>";
 	echo "<td><input type='text' size='16' name='datetime' id='datetime'" .
-             "value='" . attr(date('Y-m-d H:i:s', time())) . "'" .
+             "value='" . htmlspecialchars(oeFormatShortDate(attr(date('Y-m-d H:i:s', time())))) . "'" .
              "onkeyup='datekeyup(this,mypcc,true)' onblur='dateblur(this,mypcc,true)' />" .
              "<img src='" . $rootdir . "/pic/show_calendar.gif' id='img_date' align='absbottom'" .
              "width='24' height='22' border='0' alt='[?]' style='cursor:pointer' /></td></tr>";
         ?>
         <script language="javascript">
-        Calendar.setup({inputField:"datetime", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_date", showsTime:true});
+        Calendar.setup({inputField:"datetime", ifFormat:"<?php echo $DateFormat?>", button:"img_date", showsTime:true});
         </script>
 
 	<?php

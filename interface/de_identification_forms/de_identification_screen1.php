@@ -22,6 +22,9 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/translation.inc.php");
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 ?>
 
 <html>
@@ -546,8 +549,8 @@ function download_file()
 </table>
 <script language='JavaScript'>
 /* required for popup calendar */
-Calendar.setup({inputField:"begin_date", ifFormat:"%Y-%m-%d", button:"img_begin_date"});
-Calendar.setup({inputField:"end_date", ifFormat:"%Y-%m-%d", button:"img_end_date"});
+Calendar.setup({inputField:"begin_date", ifFormat:"<?php echo $DateFormat?>", button:"img_begin_date"});
+Calendar.setup({inputField:"end_date", ifFormat:"<?php echo $DateFormat?>", button:"img_end_date"});
 </script>		
 	<?php	
 	}   

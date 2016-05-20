@@ -35,6 +35,11 @@ $ignoreAuth = 1;
  include_once("../interface/globals.php");
  include_once("$srcdir/patient.inc");
 
+ require_once("$srcdir/formatting.inc.php");
+
+/** Current format of date */
+$DateFormat = DateFormatRead();
+
  // Exit if the modify calendar for portal flag is not set
  if (!($GLOBALS['portal_onsite_appt_modify'])) {
    echo htmlspecialchars( xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
@@ -436,7 +441,7 @@ form {
 
 <!-- for the pop up calendar -->
 <script language='JavaScript'>
- Calendar.setup({inputField:"startdate", ifFormat:"%Y-%m-%d", button:"img_date"});
+ Calendar.setup({inputField:"startdate", ifFormat: "<?php echo $DateFormat?>", button:"img_date"});
 
 // jQuery stuff to make the page a little easier to use
 

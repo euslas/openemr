@@ -132,7 +132,7 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                                         <?php echo htmlspecialchars( xl('From'), ENT_QUOTES).':' ?><input type='text' size='7' 
                                         name='master_from_date_<?php echo $DateNamePart;?>' 
                                         id='master_from_date_<?php echo $DateNamePart;?>' class="text " readonly=""  
-                                        value="<?php echo attr($_REQUEST["master_from_date_$DateNamePart"]) ?>"
+                                        value="<?php echo htmlspecialchars(oeFormatShortDate(attr($_REQUEST["master_from_date_$DateNamePart"]))); ?>"
                                         onChange="SetDateCriteriaCustom('date_master_criteria_<?php echo $DateNamePart;?>');
                                         appendOptionDateCriteria('<?php echo attr($ThisPageSearchCriteriaDisplay[$ThisPageSearchCriteriaIndex]);?>',
                                         '<?php echo $ThisPageSearchCriteriaKey[$ThisPageSearchCriteriaIndex];?>',
@@ -144,7 +144,7 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                                         align="texttop"    id='img_master_fromdate_<?php echo $DateNamePart;?>' border='0' alt='[?]' style='cursor:pointer'
                                         title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
                                        <script>
-                                        Calendar.setup({inputField:"master_from_date_<?php echo $DateNamePart;?>", ifFormat:"%Y-%m-%d", button:"img_master_fromdate_<?php echo $DateNamePart;?>"});
+                                        Calendar.setup({inputField:"master_from_date_<?php echo $DateNamePart;?>", ifFormat:"<?php echo $DateFormat; ?>", button:"img_master_fromdate_<?php echo $DateNamePart;?>"});
                                        </script>                            
                                    </td>
                                   </tr>
@@ -153,7 +153,7 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                                         <?php echo htmlspecialchars( xl('To'), ENT_QUOTES).':' ?><input type='text' size='7' 
                                         name='master_to_date_<?php echo $DateNamePart;?>' 
                                         id='master_to_date_<?php echo $DateNamePart;?>' class="text " readonly=""
-                                        value="<?php echo attr($_REQUEST["master_to_date_$DateNamePart"]) ?>"
+                                        value="<?php echo htmlspecialchars(oeFormatShortDate(attr($_REQUEST["master_to_date_$DateNamePart"]))); ?>"
                                         onChange="SetDateCriteriaCustom('date_master_criteria_<?php echo $DateNamePart;?>');
                                         appendOptionDateCriteria('<?php echo attr($ThisPageSearchCriteriaDisplay[$ThisPageSearchCriteriaIndex]);?>',
                                         '<?php echo $ThisPageSearchCriteriaKey[$ThisPageSearchCriteriaIndex];?>',
@@ -165,7 +165,7 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                                         align="texttop"    id='img_master_todate_<?php echo $DateNamePart;?>' border='0' alt='[?]' style='cursor:pointer'
                                         title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
                                        <script>
-                                        Calendar.setup({inputField:"master_to_date_<?php echo $DateNamePart;?>", ifFormat:"%Y-%m-%d", button:"img_master_todate_<?php echo $DateNamePart;?>"});
+                                        Calendar.setup({inputField:"master_to_date_<?php echo $DateNamePart;?>", ifFormat:"<?php echo $DateFormat; ?>", button:"img_master_todate_<?php echo $DateNamePart;?>"});
                                        </script>                            
                                    </td>
                                   </tr>

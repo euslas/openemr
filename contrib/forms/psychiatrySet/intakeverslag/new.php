@@ -10,6 +10,11 @@ include_once("../../globals.php");
 include_once("$srcdir/api.inc");
 include_once("$srcdir/patient.inc");
 include_once("$srcdir/patient.inc");
+require_once("$srcdir/formatting.inc.php");
+
+/** Current format date */
+$DateFormat = DateFormatRead();
+
 formHeader("Form: intakeverslag");
 $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
 
@@ -258,7 +263,7 @@ function autosave( )
 </form>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"intakedatum", ifFormat:"%Y-%m-%d", button:"img_last_encounter"});
+ Calendar.setup({inputField:"intakedatum", ifFormat:"<?php echo $DateFormat; ?>", button:"img_last_encounter"});
 </script>
 
 <div id="timestamp"></div>

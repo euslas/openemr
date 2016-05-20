@@ -21,6 +21,8 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
 
+$DateFormat = DateFormatRead();
+
 function bucks($amount) {
   if ($amount != 0) return oeFormatMoney($amount);
   return '';
@@ -256,7 +258,7 @@ foreach (array(
      </td>
      <td nowrap>
       <input type='text' name='form_from_date' id="form_from_date" size='10'
-       value='<?php echo htmlspecialchars($form_from_date, ENT_QUOTES) ?>'
+       value='<?php echo htmlspecialchars(oeFormatShortDate($form_from_date), ENT_QUOTES) ?>'
        title='<?php echo htmlspecialchars(xl('yyyy-mm-dd'), ENT_QUOTES) ?>'
        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'>
       <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -268,7 +270,7 @@ foreach (array(
      </td>
      <td nowrap>
       <input type='text' name='form_to_date' id="form_to_date" size='10'
-       value='<?php echo htmlspecialchars($form_to_date, ENT_QUOTES) ?>'
+       value='<?php echo htmlspecialchars(oeFormatShortDate($form_to_date), ENT_QUOTES) ?>'
        title='<?php echo htmlspecialchars(xl('yyyy-mm-dd'), ENT_QUOTES) ?>'
        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'>
       <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -427,8 +429,8 @@ if ($form_action != 'export') {
 
 <!-- stuff for the popup calendar -->
 <script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat?>", button:"img_to_date"});
 </script>
 
 </html>

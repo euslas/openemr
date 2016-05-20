@@ -32,6 +32,8 @@ include_once("../globals.php");
 include_once("$srcdir/log.inc");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
+
+$DateFormat = DateFormatRead();
 ?>
 <html>
 <head>
@@ -149,13 +151,13 @@ $sortby = $_GET['sortby'];
 <tr><td>
 <span class="text"><?php echo xlt('Start Date'); ?>: </span>
 </td><td>
-<input type="text" size="18" name="start_date" id="start_date" value="<?php echo $start_date ? $start_date : date('Y-m-d H:i:s'); ?>" title="<?php echo xla('yyyy-mm-dd H:m Start date'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
+<input type="text" size="18" name="start_date" id="start_date" value="<?php echo $start_date ? htmlspecialchars(oeFormatShortDate($start_date)) : date(str_replace('%','',$DateFormat).' H:i:s'); ?>" title="<?php echo xla('yyyy-mm-dd H:m Start date'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
 <img src="../pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_begin_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php echo xla('Click here to choose date time'); ?>">&nbsp;
 </td>
 <td>
 <span class="text"><?php echo xlt('End Date'); ?>: </span>
 </td><td>
-<input type="text" size="18" name="end_date" id="end_date" value="<?php echo $end_date ? $end_date : date('Y-m-d H:i:s'); ?>" title="<?php echo xla('yyyy-mm-dd H:m End date'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
+<input type="text" size="18" name="end_date" id="end_date" value="<?php echo $end_date ? $end_date : date(str_replace('%','',$DateFormat).' H:i:s'); ?>" title="<?php echo xla('yyyy-mm-dd H:m End date'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
 <img src="../pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_end_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php echo xla('Click here to choose date time'); ?>">&nbsp;
 </td>
 
@@ -328,8 +330,8 @@ $(document).ready(function(){
 
 
 /* required for popup calendar */
-Calendar.setup({inputField:"start_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:true});
-Calendar.setup({inputField:"end_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date", showsTime:true});
+Calendar.setup({inputField:"start_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_begin_date", showsTime:true});
+Calendar.setup({inputField:"end_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_end_date", showsTime:true});
 
 </script>
 

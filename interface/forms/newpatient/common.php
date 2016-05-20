@@ -20,6 +20,9 @@
 
 require_once("$srcdir/options.inc.php");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 $months = array("01","02","03","04","05","06","07","08","09","10","11","12");
 $days = array("01","02","03","04","05","06","07","08","09","10","11","12","13","14",
   "15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31");
@@ -286,7 +289,7 @@ if ($fres) {
      <td class='bold' nowrap><?php echo xlt('Date of Service:'); ?></td>
      <td class='text' nowrap>
       <input type='text' size='10' name='form_date' id='form_date' <?php echo $disabled ?>
-       value='<?php echo $viewmode ? substr($result['date'], 0, 10) : date('Y-m-d'); ?>'
+       value='<?php echo $viewmode ? substr($result['date'], 0, 10) : htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>'
        title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
         <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -383,8 +386,8 @@ while ($irow = sqlFetchArray($ires)) {
 
 <script language="javascript">
 /* required for popup calendar */
-Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
-Calendar.setup({inputField:"form_onset_date", ifFormat:"%Y-%m-%d", button:"img_form_onset_date"});
+Calendar.setup({inputField:"form_date", ifFormat:"<?php echo $DateFormat?>", button:"img_form_date"});
+Calendar.setup({inputField:"form_onset_date", ifFormat:"<?php echo $DateFormat?>", button:"img_form_onset_date"});
 <?php
 if (!$viewmode) { ?>
  function duplicateVisit(enc, datestr) {

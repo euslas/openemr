@@ -27,6 +27,9 @@
  require_once "$srcdir/options.inc.php";
  require_once "$srcdir/formdata.inc.php";
 
+ /** Current format date */
+ $DateFormat = DateFormatRead();
+
  $from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
  $to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
  $form_facility = isset($_POST['form_facility']) ? $_POST['form_facility'] : '';
@@ -99,7 +102,8 @@
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Referrals','e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+    <?= date("d F Y", strtotime(oeFormatDateForPrintReport($form_from_date)))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($form_to_date))); ?>
 </div>
 
 <form name='theform' id='theform' method='post' action='referrals_report.php'>
@@ -266,8 +270,8 @@
 </form>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_to_date"});
 </script>
 
 </body>

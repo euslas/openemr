@@ -217,6 +217,8 @@ function generate_select_list($tag_name, $list_id, $currvalue, $title, $empty_na
 function generate_form_field($frow, $currvalue) {
   global $rootdir, $date_init, $ISSUE_TYPES, $code_types,$condition_str;
 
+
+  $DateFormat = DateFormatRead();
   $currescaped = htmlspecialchars($currvalue, ENT_QUOTES);
 
   $data_type   = $frow['data_type'];
@@ -328,7 +330,7 @@ function generate_form_field($frow, $currvalue) {
       echo "<table cellpadding='0' cellspacing='0'><tr><td class='text'>";
     }
     echo "<input type='text' size='10' name='form_$field_id_esc' id='form_$field_id_esc'" .
-      " value='" . substr($currescaped, 0, 10) . "'";
+      " value='" . htmlspecialchars(oeFormatShortDate(substr($currescaped, 0, 10))) . "'";
     if (!$agestr) echo " title='$description'";
     echo " $lbfonchange onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' $disabled />";
     if (!$disabled) {
@@ -337,7 +339,7 @@ function generate_form_field($frow, $currvalue) {
       " title='" . htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES) . "' />";
       $date_init .= " Calendar.setup({" .
         "inputField:'form_$field_id', " .
-        "ifFormat:'%Y-%m-%d', ";
+        "ifFormat:'".$DateFormat."', ";
       if ($agestr) {
         $date_init .= "onUpdate: function() {" .
           "if (typeof(updateAgeString) == 'function') updateAgeString('$field_id','$age_asof_date', $age_format);" .
@@ -988,14 +990,16 @@ function generate_form_field($frow, $currvalue) {
     echo " $disabled />" . xlt('Quit') . "&nbsp;</td>";
     // quit date
     echo "<td class='text'><input type='text' size='6' name='date_$field_id_esc' id='date_$field_id_esc'" .
-      " value='$resdate'" .
+      " value='htmlspecialchars(oeFormatShortDate($resdate))'" .
       " title='$description'" .
       " onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' $disabled />";
     if (!$disabled) {
       echo "<img src='$rootdir/pic/show_calendar.gif' align='absbottom' width='24' height='22'" .
       " id='img_$field_id_esc' border='0' alt='[?]' style='cursor:pointer'" .
       " title='" . htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES) . "' />";
-      $date_init .= " Calendar.setup({inputField:'date_$field_id', ifFormat:'%Y-%m-%d', button:'img_$field_id'});\n";
+      $date_init .= " Calendar.setup({inputField:'date_$field_id', ifFormat:'"
+          .$DateFormat
+          ."', button:'img_$field_id'});\n";
     }
     echo "&nbsp;</td>";
     // never

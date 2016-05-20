@@ -23,9 +23,12 @@
   $fake_register_globals=false;
   $sanitize_all_escapes=true;     
     
-    require_once("../../globals.php"); 
-    require_once("$srcdir/htmlspecialchars.inc.php");  
-    require_once("$srcdir/dated_reminder_functions.php"); 
+  require_once("../../globals.php");
+  require_once("$srcdir/htmlspecialchars.inc.php");
+  require_once("$srcdir/dated_reminder_functions.php");
+  require_once("$srcdir/formatting.inc.php");
+
+  $DateFormat = DateFormatRead();
   
   $dateRanges = array();
 // $dateranges = array ( number_period => text to display ) == period is always in the singular 
@@ -313,7 +316,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
       <br />   
        
     <fieldset>          
-            <?php echo xlt('Due Date') ?> : <input type='text' name='dueDate' id="dueDate" size='20' value="<?php echo ($this_message['dueDate'] == '' ? date('Y-m-d') : attr($this_message['dueDate'])); ?>" onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>' />      
+            <?php echo xlt('Due Date') ?> : <input type='text' name='dueDate' id="dueDate" size='20' value="<?php echo ($this_message['dueDate'] == '' ? date(str_replace('%','',$DateFormat)) : htmlspecialchars(oeFormatShortDate(attr($this_message['dueDate'])))); ?>" onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>' />
             <?php echo xlt('OR') ?> 
             <?php echo xlt('Select a Time Span') ?> : <select id="timeSpan">
                                       <option value="__BLANK__"> -- <?php echo xlt('Select a Time Span') ?> -- </option>
@@ -411,6 +414,6 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 <script language="Javascript"> 
-  Calendar.setup({inputField:"dueDate", ifFormat:"%Y-%m-%d", button:"img_begin_date", showsTime:'false'}); 
+  Calendar.setup({inputField:"dueDate", ifFormat:"<? echo ($DateFormat); ?>", button:"img_begin_date", showsTime:'false'});
 </script>
 </html>

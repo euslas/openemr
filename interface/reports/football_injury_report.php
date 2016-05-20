@@ -7,6 +7,8 @@ include_once("../../library/patient.inc");
 include_once("../../library/acl.inc");
 include_once("../../contrib/forms/football_injury_audit/fia.inc.php");
 
+$DateFormat = DateFormatRead();
+
 // Might want something different here.
 //
 // if (! acl_check('acct', 'rep')) die("Unauthorized access.");
@@ -295,7 +297,7 @@ $arr_types_ucsmc = array(
    from
   </td>
   <td valign='top' nowrap>
-   <input type='text' name='form_from_date' id='form_from_date' size='10' value='<?php echo $from_date ?>'
+   <input type='text' name='form_from_date' id='form_from_date' size='10' value='<?php echo htmlspecialchars(oeFormatShortDate($from_date)) ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='Start date yyyy-mm-dd'>
    <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
     id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
@@ -307,7 +309,7 @@ $arr_types_ucsmc = array(
    to
   </td>
   <td valign='top' nowrap>
-   <input type='text' name='form_to_date' id='form_to_date' size='10' value='<?php echo $to_date ?>'
+   <input type='text' name='form_to_date' id='form_to_date' size='10' value='<?php echo htmlspecialchars(oeFormatShortDate($to_date)) ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='End date yyyy-mm-dd'>
    <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
     id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
@@ -618,8 +620,8 @@ $arr_types_ucsmc = array(
 </center>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat?>", button:"img_to_date"});
 </script>
 
 </body>

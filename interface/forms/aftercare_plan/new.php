@@ -31,6 +31,10 @@ include_once("$srcdir/api.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
+
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 formHeader("Form:AfterCare Planning");
 $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
@@ -97,7 +101,7 @@ echo "<form method='post' name='my_form' " .
   <td align="left" class="forms"><?php echo xlt('Admit Date'); ?>:</td>
 		<td class="forms">
 			   <input type='text' size='10' name='admit_date' id='admission_date' <?php echo attr($disabled); ?>;
-			   value='<?php echo attr($obj{"admit_date"}); ?>'   
+			   value='<?php echo htmlspecialchars(oeFormatShortDate(attr($obj{"admit_date"}))); ?>'
 			   title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
         <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -110,7 +114,7 @@ echo "<form method='post' name='my_form' " .
 		<td align="left" class="forms"><?php echo xlt('Discharged'); ?>:</td>
 		<td class="forms">
 			   <input type='text' size='10' name='discharged' id='discharge_date' <?php echo attr($disabled); ?>;
-      value='<?php echo attr($obj{"discharged"}); ?>'
+      value='<?php echo htmlspecialchars(oeFormatShortDate(attr($obj{"discharged"}))); ?>'
        title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
         <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -194,8 +198,8 @@ echo "<form method='post' name='my_form' " .
 </form>
 <script language="javascript">
 /* required for popup calendar */
-Calendar.setup({inputField:"admission_date", ifFormat:"%Y-%m-%d", button:"img_admission_date"});
-Calendar.setup({inputField:"discharge_date", ifFormat:"%Y-%m-%d", button:"img_discharge_date"});
+Calendar.setup({inputField:"admission_date", ifFormat:"<?php echo $DateFormat?>", button:"img_admission_date"});
+Calendar.setup({inputField:"discharge_date", ifFormat:"<?php echo $DateFormat?>", button:"img_discharge_date"});
 </script>
 <?php
 formFooter();

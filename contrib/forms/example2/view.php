@@ -5,6 +5,10 @@
 
 include_once("../../globals.php");
 include_once("$srcdir/api.inc");
+require_once("$srcdir/formatting.inc.php");
+
+/** Current format date */
+$DateFormat = DateFormatRead();
 
 /** CHANGE THIS - name of the database table associated with this form **/
 $table_name = "form_example";
@@ -145,9 +149,9 @@ Date of signature:
 
 <script language="javascript">
 /* required for popup calendar */
-Calendar.setup({inputField:"dob", ifFormat:"%Y-%m-%d", button:"img_dob"});
-Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
-Calendar.setup({inputField:"sig_date", ifFormat:"%Y-%m-%d", button:"img_sig_date"});
+Calendar.setup({inputField:"dob", ifFormat:"<?php echo $DateFormat?>", button:"img_dob"});
+Calendar.setup({inputField:"form_date", ifFormat:"<?php echo $DateFormat?>", button:"img_form_date"});
+Calendar.setup({inputField:"sig_date", ifFormat:"<?php echo $DateFormat?>", button:"img_sig_date"});
 
 // jQuery stuff to make the page a little easier to use
 

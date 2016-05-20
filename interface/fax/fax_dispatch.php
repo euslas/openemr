@@ -13,6 +13,9 @@ require_once("$srcdir/forms.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/gprelations.inc.php");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 if ($_GET['file']) {
   $mode = 'fax';
   $filename = $_GET['file'];
@@ -577,7 +580,7 @@ foreach ($categories as $catkey => $catname) {
        <td class='itemtitle' nowrap><?php xl('Document Date','e'); ?></td>
        <td>
         <input type='text' size='10' name='form_docdate' id='form_docdate'
-        value='<?php echo date('Y-m-d'); ?>'
+        value='<?php echo htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>'
         title='<?php xl('yyyy-mm-dd date associated with this document','e'); ?>'
         onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
         <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -751,7 +754,7 @@ foreach ($jpgarray as $jfnamebase => $jfname) {
 </form>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_docdate", ifFormat:"%Y-%m-%d", button:"img_docdate"});
+ Calendar.setup({inputField:"form_docdate", ifFormat:"<?php echo $DateFormat?>", button:"img_docdate"});
 </script>
 
 </body>

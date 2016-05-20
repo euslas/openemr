@@ -7,6 +7,8 @@ require_once("$srcdir/forms.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 
+$DateFormat = DateFormatRead();
+
 // get various authorization levels
 $auth_notes_a  = acl_check('encounters', 'notes_a');
 $auth_notes    = acl_check('encounters', 'notes');
@@ -90,7 +92,7 @@ function show_date_fun(){
          id='img_start' border='0' alt='[?]' style='cursor:pointer'
          title='<?php xl('Click here to choose a date','e'); ?>' >
         <script LANGUAGE="JavaScript">
-         Calendar.setup({inputField:"Start", ifFormat:"%Y-%m-%d", button:"img_start"});
+         Calendar.setup({inputField:"Start", ifFormat:"<?php echo $DateFormat?>", button:"img_start"});
         </script>
       </td>
       <td>
@@ -105,7 +107,7 @@ function show_date_fun(){
          id='img_end' border='0' alt='[?]' style='cursor:pointer'
          title='<?php xl('Click here to choose a date','e'); ?>' >
         <script LANGUAGE="JavaScript">
-         Calendar.setup({inputField:"End", ifFormat:"%Y-%m-%d", button:"img_end"});
+         Calendar.setup({inputField:"End", ifFormat:"<?php echo $DateFormat?>", button:"img_end"});
         </script>
       </td>
     </tr>
@@ -284,9 +286,9 @@ while ($prow = sqlFetchArray($pres)) {
         echo $ierow['encounter'] . "/";
     }
     echo "' />$disptitle</td>\n";
-    echo "     <td>" . $prow['begdate'];
+    echo "     <td>" . htmlspecialchars(oeFormatShortDate($prow['begdate']));
 
-    if ($prow['enddate']) { echo " - " . $prow['enddate']; }
+    if ($prow['enddate']) { echo " - " . htmlspecialchars(oeFormatShortDate($prow['enddate'])); }
     else { echo " Active"; }
 
     echo "</td>\n";
@@ -359,7 +361,7 @@ while($result = sqlFetchArray($res)) {
         }
 
         echo $result{"reason"}. 
-                " (" . date("Y-m-d",strtotime($result{"date"})) .
+                " (" . htmlspecialchars(oeFormatShortDate(date("Y-m-d",strtotime($result{"date"})))) .
                 ")\n";
         echo "<div class='encounter_forms'>\n";
     } 

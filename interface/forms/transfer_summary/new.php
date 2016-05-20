@@ -34,6 +34,9 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
 $obj = $formid ? formFetch("form_transfer_summary", $formid) : array();
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 ?>
 <html>
 <head>
@@ -101,7 +104,7 @@ echo "<form method='post' name='my_form' " .
 		<td align="left" class="forms"><?php echo xlt('Transfer date'); ?>:</td>
 	   	<td class="forms">
 			   <input type='text' size='10' name='transfer_date' id='transfer_date' <?php echo attr ($disabled)?>;
-       value='<?php echo attr($obj{"transfer_date"}); ?>' 
+       value='<?php echo htmlspecialchars(oeFormatShortDate(attr($obj{"transfer_date"}))); ?>'
        title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
         <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -162,7 +165,7 @@ echo "<form method='post' name='my_form' " .
 
 <script language="javascript">
 /* required for popup calendar */
-Calendar.setup({inputField:"transfer_date", ifFormat:"%Y-%m-%d", button:"img_transfer_date"});
+Calendar.setup({inputField:"transfer_date", ifFormat:"<?php echo $DateFormat?>", button:"img_transfer_date"});
 
 </script>
 <?php

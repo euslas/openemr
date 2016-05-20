@@ -31,6 +31,8 @@ require_once(__DIR__.'/../globals.php');
 require_once($srcdir.'/log.inc');
 require_once($srcdir.'/formdata.inc.php');
 require_once($srcdir.'/formatting.inc.php');
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
 
 $error_log_path = $GLOBALS['OE_SITE_DIR'].'/documents/erx_error';
 
@@ -91,7 +93,7 @@ if($filename) {
 					<span class="text"><?php echo xlt('Date'); ?>: </span>
 				</td>
 				<td>
-					<input type="text" size="10" name="start_date" id="start_date" value="<?php echo $start_date ? substr($start_date, 0, 10) : date('Y-m-d'); ?>" title="<?php echo xlt('yyyy-mm-dd Date of service'); ?>" onkeyup="datekeyup(this, mypcc)" onblur="dateblur(this, mypcc)" />
+					<input type="text" size="10" name="start_date" id="start_date" value="<?php echo $start_date ? substr($start_date, 0, 10) : htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>" title="<?php echo xlt('yyyy-mm-dd Date of service'); ?>" onkeyup="datekeyup(this, mypcc)" onblur="dateblur(this, mypcc)" />
 					<img src="<?php echo $GLOBALS['webroot']; ?>/interface/pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_begin_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php echo xlt('Click here to choose a date'); ?>">&nbsp;
 				</td>
 				<td>
@@ -127,6 +129,6 @@ if($filename) {
 ?>
 	</body>
 	<script type="text/javascript">
-		Calendar.setup({inputField:"start_date", ifFormat:"%Y-%m-%d", button:"img_begin_date"});
+		Calendar.setup({inputField:"start_date", ifFormat:"<?php echo $DateFormat?>", button:"img_begin_date"});
 	</script>
 </html>

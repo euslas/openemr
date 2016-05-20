@@ -33,6 +33,9 @@ require_once("$srcdir/classes/Document.class.php");
 require_once("./receive_hl7_results.inc.php");
 require_once("./gen_hl7_order.inc.php");
 
+/** Current format date */
+$DateFormat = DateFormatRead();
+
 /**
  * Get a list item title, translating if required.
  *
@@ -569,9 +572,9 @@ while ($row = sqlFetchArray($res)) {
 <script language='JavaScript'>
 
 // Initialize calendar widgets for "from" and "to" dates.
-Calendar.setup({inputField:'form_from_date', ifFormat:'%Y-%m-%d',
+Calendar.setup({inputField:'form_from_date', ifFormat:"<?= $DateFormat ?>",
  button:'img_from_date'});
-Calendar.setup({inputField:'form_to_date', ifFormat:'%Y-%m-%d',
+Calendar.setup({inputField:'form_to_date', ifFormat:"<?= $DateFormat ?>",
  button:'img_to_date'});
 
 </script>

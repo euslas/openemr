@@ -36,6 +36,8 @@ require_once("../../library/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 
+$DateFormat = DateFormatRead();
+
 
 $alertmsg = '';
 $bgcolor = "#aaaaaa";
@@ -401,7 +403,7 @@ function checkAll(checked) {
 						   <?php echo xlt('Service Date'); ?>:
 						</td>
 						<td>
-						   <input type='text' name='form_date' id="form_date" size='10' value='<?php echo attr($form_date) ?>'
+						   <input type='text' name='form_date' id="form_date" size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_date))) ?>'
 							onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
 						   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
 							id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
@@ -411,7 +413,7 @@ function checkAll(checked) {
 						   <?php echo xlt('To'); ?>:
 						</td>
 						<td>
-						   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo attr($form_to_date) ?>'
+						   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>'
 							onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
 						   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
 							id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
@@ -979,7 +981,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
           echo "  <td class='detail'>&nbsp;" . attr($row['ss']) . "</td>\n";
         }
         if ($form_cb_dob) {
-          echo "  <td class='detail'>&nbsp;" . attr(oeFormatShortDate($row['DOB'])) . "</td>\n";
+          echo "  <td class='detail'>&nbsp;" . attr(date(DateFormatRead(true), strtotime($row['DOB']))) . "</td>\n";
         }
         if ($form_cb_pubpid) {
           echo "  <td class='detail'>&nbsp;" . attr($row['pubpid']) . "</td>\n";
@@ -1227,8 +1229,8 @@ if (!$_POST['form_csvexport']) {
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language="Javascript">
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_date", ifFormat:"<?php echo $DateFormat?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat?>", button:"img_to_date"});
 </script>
 </html>
 <?php

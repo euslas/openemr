@@ -43,6 +43,9 @@ require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
  //Check access control
  if (!acl_check('patients','appt','',array('write','wsome') ))
    die(xl('Access not allowed'));
@@ -1157,7 +1160,7 @@ $classpati='';
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo attr($date) ?>'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($date))) ?>'
     title='<?php echo xla('yyyy-mm-dd event date or starting date'); ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' onchange='dateChanged()' />
    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -1558,9 +1561,9 @@ if ($repeatexdate != "") {
  set_allday();
  set_repeat();
 
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
- Calendar.setup({inputField:"form_enddate", ifFormat:"%Y-%m-%d", button:"img_enddate"});
- Calendar.setup({inputField:"form_dob", ifFormat:"%Y-%m-%d", button:"img_dob"});
+ Calendar.setup({inputField:"form_date", ifFormat:"<?php echo $DateFormat?>", button:"img_date"});
+ Calendar.setup({inputField:"form_enddate", ifFormat:"<?php echo $DateFormat?>", button:"img_enddate"});
+ Calendar.setup({inputField:"form_dob", ifFormat:"<?php echo $DateFormat?>", button:"img_dob"});
 </script>
 
 <script language="javascript">

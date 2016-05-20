@@ -35,6 +35,9 @@ $fake_register_globals=false;
 require_once("../../globals.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/formatting.inc.php");
+
+$DateFormat = DateFormatRead();
 
 //if the edit button for editing disclosure is set.
 if (isset($_GET['editlid'])) 
@@ -119,7 +122,7 @@ else {?> <span class="title"><?php echo htmlspecialchars(xl('Record Disclosure')
 			width="24" height="22" align="absbottom" style="cursor: pointer;"
 			title="<?php echo htmlspecialchars(xl('Date selector'),ENT_QUOTES);?>" /></td>
 		<script type="text/javascript">
-		Calendar.setup({inputField:'dates', ifFormat:'%Y-%m-%d %H:%M:%S',
+		Calendar.setup({inputField:'dates', ifFormat: "<?= $DateFormat?> %H:%M:%S",
 		button:'img_date', showsTime:true});
 </script>
 	</tr>

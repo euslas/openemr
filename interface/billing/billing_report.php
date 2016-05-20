@@ -29,6 +29,8 @@ $daysheet = false;
 $daysheet_total = false;
 $provider_run = false;
 
+$DateFormat = DateFormatRead();
+
 if ($GLOBALS['use_custom_daysheet'] != 0) { 
   $daysheet = true;
   if ($GLOBALS['daysheet_provider_totals'] == 1) {

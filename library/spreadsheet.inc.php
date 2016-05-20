@@ -10,6 +10,11 @@ include_once(dirname(__FILE__) . '/api.inc');
 include_once(dirname(__FILE__) . '/forms.inc');
 include_once(dirname(__FILE__) . '/../interface/forms/fee_sheet/codes.php');
 
+require_once(dirname(__FILE__) . "/formatting.inc.php");
+
+/** Current format date */
+$DateFormat = DateFormatRead();
+
 $celltypes = array(
  '0' => 'Unused',
  '1' => 'Static',
@@ -685,7 +690,7 @@ for ($i = 0; $i < $num_virtual_rows; ++$i) {
 </center>
 </form>
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_start_date", ifFormat:"%Y-%m-%d", button:"img_start_date"});
+ Calendar.setup({inputField:"form_start_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_start_date"});
 <?php
 if ($alertmsg) echo " alert('$alertmsg');\n";
 ?>

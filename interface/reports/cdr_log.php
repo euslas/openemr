@@ -33,6 +33,8 @@ require_once("../../library/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/clinical_rules.php";
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
 ?>
 
 <html>
@@ -106,7 +108,7 @@ require_once "$srcdir/clinical_rules.php";
                          <?php echo xlt('Begin Date'); ?>:
                       </td>
                       <td>
-                         <input type='text' name='form_begin_date' id='form_begin_date' size='20' value='<?php echo attr($_POST['form_begin_date']); ?>'
+                         <input type='text' name='form_begin_date' id='form_begin_date' size='20' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($_POST['form_begin_date']))); ?>'
                             onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo xla('yyyy-mm-dd hh:mm:ss'); ?>'>
                            <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
                             id='img_begin_date' border='0' alt='[?]' style='cursor:pointer'
@@ -119,7 +121,7 @@ require_once "$srcdir/clinical_rules.php";
                               <?php echo xlt('End Date'); ?>:
                         </td>
                         <td>
-                           <input type='text' name='form_end_date' id='form_end_date' size='20' value='<?php echo attr($_POST['form_end_date']); ?>'
+                           <input type='text' name='form_end_date' id='form_end_date' size='20' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($_POST['form_end_date']))); ?>'
                                 onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo xla('yyyy-mm-dd hh:mm:ss'); ?>'>
                              <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
                                 id='img_end_date' border='0' alt='[?]' style='cursor:pointer'
@@ -208,7 +210,7 @@ require_once "$srcdir/clinical_rules.php";
   }
 ?>
   <tr>
-    <td><?php echo text($row['date']); ?></td>
+    <td><?= date(DateFormatRead(true) . ' H:i:s', strtotime(text($row['date']))); ?></td>
     <td><?php echo text($row['pid']); ?></td>
     <td><?php echo text($row['uid']); ?></td>
     <td><?php echo text($category_title); ?></td>
@@ -280,8 +282,8 @@ require_once "$srcdir/clinical_rules.php";
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language="Javascript">
- Calendar.setup({inputField:"form_begin_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:'true'});
- Calendar.setup({inputField:"form_end_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date", showsTime:'true'});
+ Calendar.setup({inputField:"form_begin_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_begin_date", showsTime:'true'});
+ Calendar.setup({inputField:"form_end_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_end_date", showsTime:'true'});
 </script>
 
 </html>

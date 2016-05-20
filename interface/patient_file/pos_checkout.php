@@ -65,6 +65,9 @@ require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
 require_once("../../custom/code_types.inc.php");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 $currdecimals = $GLOBALS['currency_decimals'];
 
 $details = empty($_GET['details']) ? 0 : 1;
@@ -1079,7 +1082,7 @@ if ($inv_encounter) {
   </td>
   <td>
    <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo attr($inv_date) ?>'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($inv_date))) ?>'
     title='yyyy-mm-dd date of service'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
    <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -1141,7 +1144,7 @@ else if (!empty($GLOBALS['gbl_mask_invoice_number'])) {
 </form>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+ Calendar.setup({inputField:"form_date", ifFormat:"<?php echo $DateFormat?>", button:"img_date"});
  computeTotals();
 <?php
 // The following is removed, perhaps temporarily, because gcac reporting

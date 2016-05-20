@@ -13,6 +13,9 @@ require_once("../globals.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 
+/** Current format date */
+$DateFormat = DateFormatRead();
+
  $from_date = fixDate($_POST['form_from_date'], date('Y-01-01'));
  $to_date   = fixDate($_POST['form_to_date'], date('Y-12-31'));
 
@@ -105,7 +108,8 @@ require_once("$srcdir/formatting.inc.php");
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Unique Seen Patients','e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+    <?= date("d F Y", strtotime(oeFormatDateForPrintReport($form_from_date)))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($form_to_date))); ?>
 </div>
 
 <form name='theform' method='post' action='unique_seen_patients_report.php' id='theform'>
@@ -306,8 +310,8 @@ require_once("$srcdir/formatting.inc.php");
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_to_date"});
 </script>
 </html>
 <?php

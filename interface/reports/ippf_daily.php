@@ -5,6 +5,9 @@ include_once("../globals.php");
 include_once("../../library/patient.inc");
 include_once("../../library/acl.inc");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 // Might want something different here.
 //
 if (! acl_check('acct', 'rep')) die("Unauthorized access.");
@@ -140,7 +143,7 @@ else { // not export
   </td>
   <td colspan='2' class='detail' nowrap>
    <?php xl('Date','e'); ?>
-   <input type='text' name='form_from_date' id='form_from_date' size='10' value='<?php echo $from_date ?>'
+   <input type='text' name='form_from_date' id='form_from_date' size='10' value='<?php echo htmlspecialchars(oeFormatShortDate($from_date)) ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='Report date yyyy-mm-dd' />
    <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
     id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
@@ -336,7 +339,7 @@ if ($form_output != 3) {
 </center>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat?>", button:"img_from_date"});
 <?php if ($form_output == 2) { ?>
  var win = top.printLogPrint ? top : opener.top;
  win.printLogPrint(window);

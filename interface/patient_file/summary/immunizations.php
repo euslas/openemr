@@ -12,6 +12,8 @@ include_once("../../globals.php");
 include_once("$srcdir/sql.inc");
 include_once("$srcdir/options.inc.php");
 include_once("$srcdir/immunization_helper.php");
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
 
 if (isset($_GET['mode'])) {
     /*
@@ -263,7 +265,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
           <td><table border="0">
      <tr>
        <td><input type='text' size='14' name="administered_date" id="administered_date"
-    		value='<?php echo $administered_date ? htmlspecialchars( $administered_date, ENT_QUOTES) : date('Y-m-d H:i'); ?>'
+    		value='<?php echo $administered_date ? htmlspecialchars( oeFormatShortDate($administered_date), ENT_QUOTES) : date(str_replace('%','',$DateFormat.' H:i')); ?>'
     		title='<?php echo htmlspecialchars( xl('yyyy-mm-dd Hours(24):minutes'), ENT_QUOTES); ?>'
     		onKeyUp='datekeyup(this,mypcc)' onBlur='dateblur(this,mypcc);'
     		/>
@@ -284,7 +286,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
         <tr>
           <td align="right"><span class="text"><?php echo htmlspecialchars( xl('Immunization Expiration Date'), ENT_NOQUOTES); ?></span></td>
           <td class='text'><input type='text' size='10' name="immuniz_exp_date" id="immuniz_exp_date"
-    value='<?php echo $immuniz_exp_date ? htmlspecialchars( $immuniz_exp_date, ENT_QUOTES) : ''; ?>'
+    value='<?php echo $immuniz_exp_date ? htmlspecialchars( oeFormatShortDate($immuniz_exp_date), ENT_QUOTES) : ''; ?>'
     title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc);'
     />
@@ -335,7 +337,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
               <?php echo htmlspecialchars( xl('Date Immunization Information Statements Given'), ENT_NOQUOTES); ?>          </td>
           <td>
             <input type='text' size='10' name="education_date" id="education_date"
-                    value='<?php echo $education_date? htmlspecialchars( $education_date, ENT_QUOTES) : date('Y-m-d'); ?>'
+                    value='<?php echo $education_date? htmlspecialchars( $education_date, ENT_QUOTES) : oeFormatShortDate(date('Y-m-d')); ?>'
                     title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>'
                     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc);'
             />
@@ -350,7 +352,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
               (<a href="http://www.cdc.gov/vaccines/pubs/vis/default.htm" title="<?php echo htmlspecialchars( xl('Help'), ENT_QUOTES); ?>" target="_blank">?</a>)          </td>
           <td>
             <input type='text' size='10' name="vis_date" id="vis_date"
-                    value='<?php echo $vis_date ? htmlspecialchars( $vis_date, ENT_QUOTES) : date('Y-m-d'); ?>'
+                    value='<?php echo $vis_date ? htmlspecialchars( $vis_date, ENT_QUOTES) : oeFormatShortDate(date('Y-m-d')); ?>'
                     title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>'
                     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc);'
             />
@@ -513,10 +515,10 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
 
 <script language="javascript">
 /* required for popup calendar */
-Calendar.setup({inputField:"administered_date", ifFormat:"%Y-%m-%d %H:%M", button:"img_administered_date", showsTime:true});
-Calendar.setup({inputField:"immuniz_exp_date", ifFormat:"%Y-%m-%d", button:"img_immuniz_exp_date"});
-Calendar.setup({inputField:"education_date", ifFormat:"%Y-%m-%d", button:"img_education_date"});
-Calendar.setup({inputField:"vis_date", ifFormat:"%Y-%m-%d", button:"img_vis_date"});
+Calendar.setup({inputField:"administered_date", ifFormat:"<?php echo $DateFormat?> %H:%M", button:"img_administered_date", showsTime:true});
+Calendar.setup({inputField:"immuniz_exp_date", ifFormat:"<?php echo $DateFormat?>", button:"img_immuniz_exp_date"});
+Calendar.setup({inputField:"education_date", ifFormat:"<?php echo $DateFormat?>", button:"img_education_date"});
+Calendar.setup({inputField:"vis_date", ifFormat:"<?php echo $DateFormat?>", button:"img_vis_date"});
 
 // jQuery stuff to make the page a little easier to use
 

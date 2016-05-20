@@ -16,6 +16,9 @@ require_once("$srcdir/formatting.inc.php");
 
 $alertmsg = '';
 
+require_once($srcdir."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 function bucks($amount) {
   if ($amount) return oeFormatMoney($amount);
   return "";
@@ -89,7 +92,7 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
 			   <?php xl('Visits From','e'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='form_start_date' id="form_start_date" size='10' value='<?php echo $form_start_date ?>'
+			   <input type='text' name='form_start_date' id="form_start_date" size='10' value='<?php echo htmlspecialchars(oeFormatShortDate($form_start_date)) ?>'
 				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
 			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
 				id='img_start_date' border='0' alt='[?]' style='cursor:pointer'
@@ -99,7 +102,7 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
 			   <?php xl('To','e'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='form_end_date' id="form_end_date" size='10' value='<?php echo $form_end_date ?>'
+			   <input type='text' name='form_end_date' id="form_end_date" size='10' value='<?php echo htmlspecialchars(oeFormatShortDate($form_end_date)) ?>'
 				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
 			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
 				id='img_end_date' border='0' alt='[?]' style='cursor:pointer'
@@ -228,10 +231,10 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
    &nbsp;<?php  echo $invnumber ?></a>
   </td>
   <td class="detail">
-   &nbsp;<?php  echo oeFormatShortDate(substr($row['date'], 0, 10)) ?>
+   &nbsp;<?= date(DateFormatRead(true), strtotime(substr($row['date'], 0, 10))); ?>
   </td>
   <td class="detail">
-   &nbsp;<?php  echo oeFormatShortDate($inv_duedate) ?>
+   &nbsp;<?= date(DateFormatRead(true), strtotime($inv_duedate)); ?>
   </td>
   <td class="detail" align="right">
    <?php  echo bucks($inv_amount) ?>&nbsp;
@@ -298,8 +301,8 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
 
 <script language="Javascript">
- Calendar.setup({inputField:"form_start_date", ifFormat:"%Y-%m-%d", button:"img_start_date"});
- Calendar.setup({inputField:"form_end_date", ifFormat:"%Y-%m-%d", button:"img_end_date"});
+ Calendar.setup({inputField:"form_start_date", ifFormat:"<?php echo $DateFormat?>", button:"img_start_date"});
+ Calendar.setup({inputField:"form_end_date", ifFormat:"<?php echo $DateFormat?>", button:"img_end_date"});
 </script>
 
 </html>

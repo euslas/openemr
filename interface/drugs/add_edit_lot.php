@@ -16,6 +16,9 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 function QuotedOrNull($fld) {
   if ($fld) return "'".add_escape_custom($fld)."'";
   return "NULL";
@@ -339,7 +342,7 @@ if ($_POST['form_save'] || $_POST['form_delete']) {
   <td valign='top' nowrap><b><?php echo xlt('Expiration'); ?>:</b></td>
   <td>
    <input type='text' size='10' name='form_expiration' id='form_expiration'
-    value='<?php echo attr($row['expiration']) ?>'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($row['expiration']))) ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
     title='<?php echo xla('yyyy-mm-dd date of expiration'); ?>' />
    <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -422,7 +425,7 @@ generate_form_field(array('data_type' => 14, 'field_id' => 'distributor_id',
   <td valign='top' nowrap><b><?php echo xlt('Date'); ?>:</b></td>
   <td>
    <input type='text' size='10' name='form_sale_date' id='form_sale_date'
-    value='<?php echo attr(date('Y-m-d')) ?>'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr(date('Y-m-d')))) ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
     title='<?php echo xla('yyyy-mm-dd date of purchase or transfer'); ?>' />
    <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -496,8 +499,8 @@ while ($lrow = sqlFetchArray($lres)) {
 </center>
 </form>
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_expiration", ifFormat:"%Y-%m-%d", button:"img_expiration"});
- Calendar.setup({inputField:"form_sale_date", ifFormat:"%Y-%m-%d", button:"img_sale_date"});
+ Calendar.setup({inputField:"form_expiration", ifFormat:"<?php echo $DateFormat?>", button:"img_expiration"});
+ Calendar.setup({inputField:"form_sale_date", ifFormat:"<?php echo $DateFormat?>", button:"img_sale_date"});
 <?php
 if ($info_msg) {
   echo " alert('".addslashes($info_msg)."');\n";

@@ -35,8 +35,12 @@ include_once("../../globals.php");
 include_once("$srcdir/api.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/formatting.inc.php");
 require_once($GLOBALS['srcdir'] . '/csv_like_join.php');
 require_once($GLOBALS['fileroot'] . '/custom/code_types.inc.php');
+
+/** Current format date */
+$DateFormat = DateFormatRead();
 
 formHeader("Form:Observation Form");
 $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
@@ -117,7 +121,7 @@ $check_res = $formid ? $check_res : array();
                     }
                     if (class_val == 'code_date')
                     {
-                        Calendar.setup({inputField: class_val + "_" + index, ifFormat: "%Y-%m-%d", button: "img_code_date_" + index});
+                        Calendar.setup({inputField: class_val + "_" + index, ifFormat: "<?= $DateFormat ?>", button: "img_code_date_" + index});
                     }
                 }
             }
@@ -271,7 +275,7 @@ $check_res = $formid ? $check_res : array();
                         </td>
                     <script language="javascript">
                         /* required for popup calendar */
-                        Calendar.setup({inputField: "code_date_<?php echo $key + 1; ?>", ifFormat: "%Y-%m-%d", button: "img_code_date_<?php echo $key + 1; ?>"});
+                        Calendar.setup({inputField: "code_date_<?php echo $key + 1; ?>", ifFormat: "<?= $DateFormat ?>", button: "img_code_date_<?php echo $key + 1; ?>"});
                     </script>
                 </tr>
                 <?php
@@ -338,7 +342,7 @@ $check_res = $formid ? $check_res : array();
                 </td>
             <script language="javascript">
                 /* required for popup calendar */
-                Calendar.setup({inputField: "code_date_1", ifFormat: "%Y-%m-%d", button: "img_code_date_1"});
+                Calendar.setup({inputField: "code_date_1", ifFormat: "<?= $DateFormat ?>", button: "img_code_date_1"});
             </script>
         </tr>
     <?php }

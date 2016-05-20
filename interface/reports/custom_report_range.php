@@ -31,11 +31,13 @@ require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/classes/Note.class.php");
 require_once("$srcdir/formatting.inc.php");
 
+$DateFormat = DateFormatRead();
+
 $startdate = $enddate = "";
 if(empty($_POST['start']) || empty($_POST['end'])) {
     // set some default dates
-    $startdate = date('Y-m-d', (time() - 30*24*60*60));
-    $enddate = date('Y-m-d', time());
+    $startdate = date(DateFormatRead(true), (time() - 30*24*60*60));
+    $enddate = date(DateFormatRead(true), time());
 }
 else {
     // set dates
@@ -198,7 +200,7 @@ if ($form_patient == '' ) $form_pid = '';
 			   <?php echo xlt('Start Date'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='start' id="form_from_date" size='10' value='<?php echo attr($startdate) ?>'
+			   <input type='text' name='start' id="form_from_date" size='10' value='<?= htmlspecialchars($startdate); ?>'
 				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
 			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
 				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
@@ -208,7 +210,7 @@ if ($form_patient == '' ) $form_pid = '';
 			   <?php echo xlt('End Date'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='end' id="form_to_date" size='10' value='<?php echo attr($enddate) ?>'
+			   <input type='text' name='end' id="form_to_date" size='10' value='<?= htmlspecialchars($enddate); ?>'
 				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
 			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
 				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
@@ -397,8 +399,8 @@ if( !(empty($_POST['start']) || empty($_POST['end']))) {
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 
 <script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat?>", button:"img_to_date"});
 
 </script>
 </html>

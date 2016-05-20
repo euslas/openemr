@@ -13,6 +13,9 @@ $fake_register_globals = false;
 include_once("../globals.php");
 include_once($GLOBALS['srcdir'] . "/patient.inc");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 $template_dir = $GLOBALS['OE_SITE_DIR'] . "/letter_templates";
 
 // array of field name tags to allow internationalization
@@ -441,7 +444,7 @@ function insertAtCursor(myField, myValue) {
 
   <td>
    <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo date('Y-m-d'); ?>'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>'
     title='<?php xl('yyyy-mm-dd date of this letter','e'); ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
    <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -595,7 +598,7 @@ closedir($dh);
 </body>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+ Calendar.setup({inputField:"form_date", ifFormat:"<?php echo $DateFormat?>", button:"img_date"});
 
 // jQuery stuff to make the page a little easier to use
 

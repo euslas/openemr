@@ -26,7 +26,10 @@ formHeader("Form: note");
 $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
 $provider_results = sqlQuery("select fname, lname from users where username=?",array($_SESSION{"authUser"}));
 /* name of this form */
-$form_name = "note"; 
+$form_name = "note";
+
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
 ?>
 
 <html><head>
@@ -93,7 +96,7 @@ var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 <td>
 <span class="text"><?php echo xlt('Date'); ?></span>
    <input type='text' size='10' name='date_of_signature' id='date_of_signature'
-    value='<?php echo date('Y-m-d', time()); ?>'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>'
     title='<?php echo xla('yyyy-mm-dd'); ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -114,7 +117,7 @@ var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 <script language="javascript">
 /* required for popup calendar */
-Calendar.setup({inputField:"date_of_signature", ifFormat:"%Y-%m-%d", button:"img_date_of_signature"});
+Calendar.setup({inputField:"date_of_signature", ifFormat:"<?php echo $DateFormat?>", button:"img_date_of_signature"});
 
 // jQuery stuff to make the page a little easier to use
 

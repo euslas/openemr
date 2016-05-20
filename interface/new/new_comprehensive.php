@@ -18,6 +18,8 @@ if (!acl_check('patients','demo','',array('write','addonly') ))
 
 $CPR = 4; // cells per row
 
+$DateFormat = DateFormatRead();
+
 $searchcolor = empty($GLOBALS['layout_search_color']) ?
   '#ffff55' : $GLOBALS['layout_search_color'];
 
@@ -569,7 +571,7 @@ if (! $GLOBALS['simplified_demographics']) {
       title='<?php xl('Click here to choose a date','e'); ?>'>
 
       <script LANGUAGE="JavaScript">
-      Calendar.setup({inputField:"i<?php echo $i ?>effective_date", ifFormat:"%Y-%m-%d", button:"img_i<?php echo $i; ?>effective_date"});
+      Calendar.setup({inputField:"i<?php echo $i ?>effective_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_i<?php echo $i; ?>effective_date"});
       </script>
 
 
@@ -666,7 +668,7 @@ if (! $GLOBALS['simplified_demographics']) {
     title='<?php xl('Click here to choose a date','e'); ?>'>
 
     <script LANGUAGE="JavaScript">
-    Calendar.setup({inputField:"i<?php echo $i?>subscriber_DOB", ifFormat:"%Y-%m-%d", button:"img_i<?php echo $i; ?>dob_date"});
+    Calendar.setup({inputField:"i<?php echo $i?>subscriber_DOB", ifFormat:"<?php echo $DateFormat; ?>", button:"img_i<?php echo $i; ?>dob_date"});
     </script>
 
 

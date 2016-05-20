@@ -49,6 +49,9 @@ global $ignoreAuth;
  require_once("$srcdir/edi.inc");
  include_once("$srcdir/lists.inc");
 
+/** Current format of date */
+$DateFormat = DateFormatRead();
+
 ?>
 <html>
 <head>
@@ -437,7 +440,7 @@ $(document).ready(function(){
                  id='img_start' border='0' alt='[?]' style='cursor:pointer'
                  title='<?php echo xla('Click here to choose a date'); ?>' >
                  <script LANGUAGE="JavaScript">
-                  Calendar.setup({inputField:"Start", ifFormat:"%Y-%m-%d", button:"img_start"});
+                  Calendar.setup({inputField:"Start", ifFormat:"<?php echo $DateFormat?>", button:"img_start"});
                  </script>
                 </td>
                 <td>
@@ -452,7 +455,7 @@ $(document).ready(function(){
                  id='img_end' border='0' alt='[?]' style='cursor:pointer'
                  title='<?php echo xla('Click here to choose a date'); ?>' >
                  <script LANGUAGE="JavaScript">
-                  Calendar.setup({inputField:"End", ifFormat:"%Y-%m-%d", button:"img_end"});
+                  Calendar.setup({inputField:"End", ifFormat:"<?php echo $DateFormat?>", button:"img_end"});
                  </script>
                 </td>
                </tr>

@@ -30,6 +30,9 @@ require_once("$srcdir/formatting.inc.php");
 require_once("../../custom/code_types.inc.php");
 require_once("$srcdir/billing.inc");
 
+$DateFormat = DateFormatRead();
+
+
  $errmsg  = "";
  $alertmsg = ''; // not used yet but maybe later
  $grand_total_charges    = 0;
@@ -191,7 +194,8 @@ function postError($msg) {
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Appointments and Encounters','e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+    <?= date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
 <form method='post' id='theform' action='appt_encounter_report.php'>
@@ -232,7 +236,7 @@ function postError($msg) {
 			   <?php xl('DOS','e'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php  echo $form_from_date; ?>'
+			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php  echo htmlspecialchars(oeFormatShortDate($form_from_date)); ?>'
 				title='Date of appointments mm/dd/yyyy' >
 			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
 				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
@@ -242,7 +246,7 @@ function postError($msg) {
 			   <?php xl('To','e'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php  echo $form_to_date; ?>'
+			   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php  echo htmlspecialchars(oeFormatShortDate($form_to_date)); ?>'
 				title='Optional end date mm/dd/yyyy' >
 			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
 				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
@@ -521,8 +525,8 @@ function postError($msg) {
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 
 <script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"<?php echo $DateFormat?>", button:"img_from_date"});
+ Calendar.setup({inputField:"form_to_date", ifFormat:"<?php echo $DateFormat?>", button:"img_to_date"});
 </script>
 
 </html>

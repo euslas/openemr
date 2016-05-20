@@ -36,6 +36,9 @@ require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 require_once "$srcdir/clinical_rules.php";
 require_once "$srcdir/report_database.inc";
+
+/** Current format of date  */
+$DateFormat = DateFormatRead();
 ?>
 
 <html>
@@ -263,7 +266,7 @@ require_once "$srcdir/report_database.inc";
     <?php } else { ?>
       <td align='center'><?php echo text($type_title); ?></td>
     <?php } ?>
-    <td align='center'><?php echo text($row["date_report"]); ?></td>
+    <td align='center'><?= date(DateFormatRead(true) . " H:i:s", strtotime($row["date_report"])); ?></td>
     <?php if ($row["progress"] == "complete") { ?>
       <td align='center'><?php echo xlt("Complete") . " (" . xlt("Processing Time") . ": " . text($row['report_time_processing']) . " " . xlt("Minutes") . ")"; ?></td>
     <?php } else { ?>
@@ -289,8 +292,8 @@ require_once "$srcdir/report_database.inc";
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language="Javascript">
- Calendar.setup({inputField:"form_begin_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:'true'});
- Calendar.setup({inputField:"form_end_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date", showsTime:'true'});
+ Calendar.setup({inputField:"form_begin_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_begin_date", showsTime:'true'});
+ Calendar.setup({inputField:"form_end_date", ifFormat:"<?php echo $DateFormat?> %H:%M:%S", button:"img_end_date", showsTime:'true'});
 </script>
 
 </html>

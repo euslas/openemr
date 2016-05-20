@@ -29,6 +29,9 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("portal.inc.php");
 
+/** Current format date */
+$DateFormat = DateFormatRead();
+
 /**
  * Get a list item title, translating if required.
  *
@@ -302,9 +305,9 @@ while ($v1 || $v2) {
 <script language='JavaScript'>
 
 // Initialize calendar widgets for "from" and "to" dates.
-Calendar.setup({inputField:'form_from_date', ifFormat:'%Y-%m-%d',
+Calendar.setup({inputField:'form_from_date', ifFormat:"<?= $DateFormat ?>",
  button:'img_from_date'});
-Calendar.setup({inputField:'form_to_date', ifFormat:'%Y-%m-%d',
+Calendar.setup({inputField:'form_to_date', ifFormat:"<?= $DateFormat ?>",
  button:'img_to_date'});
 
 </script>

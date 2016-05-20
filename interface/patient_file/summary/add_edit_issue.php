@@ -32,6 +32,9 @@ require_once($GLOBALS['srcdir'].'/csv_like_join.php');
 require_once($GLOBALS['srcdir'].'/htmlspecialchars.inc.php');
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
 if (isset($ISSUE_TYPES['football_injury'])) {
   if ($ISSUE_TYPES['football_injury']) {
     // Most of the logic for the "football injury" issue type comes from this
@@ -753,7 +756,7 @@ echo generate_select_list('form_medical_type', 'medical_type', $irow['injury_typ
   <td>
 
    <input type='text' size='10' name='form_begin' id='form_begin'
-    value='<?php echo attr($irow['begdate']) ?>'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($irow['begdate']))) ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
     title='<?php echo xla('yyyy-mm-dd date of onset, surgery or start of medication'); ?>' />
    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -766,7 +769,7 @@ echo generate_select_list('form_medical_type', 'medical_type', $irow['injury_typ
   <td valign='top' nowrap><b><?php echo xlt('End Date'); ?>:</b></td>
   <td>
    <input type='text' size='10' name='form_end' id='form_end'
-    value='<?php echo attr($irow['enddate']) ?>'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($irow['enddate']))) ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
     title='<?php echo xla('yyyy-mm-dd date of recovery or end of medication'); ?>' />
    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -789,7 +792,7 @@ echo generate_select_list('form_medical_type', 'medical_type', $irow['injury_typ
   <td valign='top' nowrap><b><?php echo xlt('Returned to Play'); ?>:</b></td>
   <td>
    <input type='text' size='10' name='form_return' id='form_return'
-    value='<?php echo attr($irow['returndate']) ?>'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($irow['returndate']))) ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
     title='<?php echo xla('yyyy-mm-dd date returned to play'); ?>' />
    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -938,9 +941,9 @@ echo generate_select_list('form_medical_type', 'medical_type', $irow['injury_typ
 </form>
 <script language='JavaScript'>
  newtype(<?php echo $type_index ?>);
- Calendar.setup({inputField:"form_begin", ifFormat:"%Y-%m-%d", button:"img_begin"});
- Calendar.setup({inputField:"form_end", ifFormat:"%Y-%m-%d", button:"img_end"});
- Calendar.setup({inputField:"form_return", ifFormat:"%Y-%m-%d", button:"img_return"});
+ Calendar.setup({inputField:"form_begin", ifFormat:"<?php echo $DateFormat?>", button:"img_begin"});
+ Calendar.setup({inputField:"form_end", ifFormat:"<?php echo $DateFormat?>", button:"img_end"});
+ Calendar.setup({inputField:"form_return", ifFormat:"<?php echo $DateFormat?>", button:"img_return"});
 </script>
 </body>
 </html>

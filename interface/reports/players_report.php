@@ -22,6 +22,10 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/lists.inc");
 require_once("$srcdir/calendar_events.inc.php");
+require_once("$srcdir/formatting.inc.php");
+
+/** Current format date */
+$DateFormat = DateFormatRead();
 
 // Temporary variable while new "propagation" logic is being tested.
 // True means that missing days in the daily_fitness table default to
@@ -96,7 +100,7 @@ if ($res) {
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/topdialog.js"></script>
 <?php } ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/ajtooltip.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 
@@ -199,14 +203,7 @@ if (empty($_GET['embed'])) echo "  window.close();\n";
   </td>
   <td align='right'>
    <b><?php  echo date('l, F j, Y', $now) ?></b>&nbsp;
-   <input type='text' name='form_date' id='form_date' size='10' value='<?php  echo date('Y-m-d', $now) ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a start date','e'); ?>'>
-
-
-
+   <input type='text' name='form_date' id='form_date' size='10' value='<?php  echo date('Y-m-d', $now) ?>'/>
    &nbsp;
    <select name='form_squad' title='<?php xl('Select desired squad','e'); ?>'>
 <?php
@@ -467,13 +464,15 @@ if ($alertmsg) {
 }
 ?>
 </script>
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script language="Javascript">
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+    });
 </script>
 </body>
 </html>

@@ -43,6 +43,9 @@ require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+
  //Check access control
  if (!acl_check('patients','appt','',array('write','wsome') ))
    die(xl('Access not allowed'));
@@ -77,7 +80,7 @@ require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 
  ?>
 
- <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+ <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 
  <?php
 
@@ -987,9 +990,9 @@ td { font-size:0.8em; }
   f.form_repeat_type.disabled = isdisabled;
   f.form_repeat_freq.disabled = isdisabled;
   f.form_enddate.disabled = isdisabled;
-  document.getElementById('tdrepeat1').style.color = mycolor;
-  document.getElementById('tdrepeat2').style.color = mycolor;
-  document.getElementById('img_enddate').style.visibility = myvisibility;
+ $("#tdrepeat1").css("color", mycolor);
+ $("#tdrepeat2").css("color", mycolor);
+ $("#img_enddate").css("visibility", myvisibility);
  }
 
  // Constants used by dateChanged() function.
@@ -1157,12 +1160,7 @@ $classpati='';
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo attr($date) ?>'
-    title='<?php echo xla('yyyy-mm-dd event date or starting date'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' onchange='dateChanged()' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-    title='<?php echo xla('Click here to choose a date'); ?>'>
+    value='<?= date($DateFormat, strtotime(attr($date))); ?>' onchange='dateChanged()' />
   </td>
   <td nowrap>
    &nbsp;&nbsp;
@@ -1454,10 +1452,8 @@ generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'ap
   <td nowrap id='tdrepeat2'><?php echo xlt('until'); ?>
   </td>
   <td nowrap>
-   <input type='text' size='10' name='form_enddate' id='form_enddate' value='<?php echo attr($row['pc_endDate']) ?>' onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo xla('yyyy-mm-dd last date of this event');?>' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_enddate' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-    title='<?php echo xla('Click here to choose a date');?>'>
+   <input type='text' size='10' name='form_enddate' id='form_enddate'
+          value='<?= date($DateFormat, strtotime(attr($row['pc_endDate'])));  ?>'/>
 <?php
 if ($repeatexdate != "") {
     $tmptitle = "The following dates are excluded from the repeating series";
@@ -1509,10 +1505,7 @@ if ($repeatexdate != "") {
    <b><font color='red'><?php echo xlt('DOB is missing, please enter if possible'); ?>:</font></b>
   </td>
   <td nowrap>
-   <input type='text' size='10' name='form_dob' id='form_dob' title='<?php echo xla('yyyy-mm-dd date of birth');?>' onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_dob' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-    title='<?php echo xla('Click here to choose a date');?>'>
+   <input type='text' size='10' name='form_dob' id='form_dob' />
   </td>
  </tr>
 
@@ -1548,7 +1541,8 @@ if ($repeatexdate != "") {
 </div>
 
 </body>
-
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script language='JavaScript'>
 <?php if ($eid) { ?>
  set_display();
@@ -1557,10 +1551,12 @@ if ($repeatexdate != "") {
 <?php } ?>
  set_allday();
  set_repeat();
-
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
- Calendar.setup({inputField:"form_enddate", ifFormat:"%Y-%m-%d", button:"img_enddate"});
- Calendar.setup({inputField:"form_dob", ifFormat:"%Y-%m-%d", button:"img_dob"});
+$(function() {
+    $("#form_date, #form_enddate, #form_dob").datetimepicker({
+        timepicker: false,
+        format: "<?= $DateFormat; ?>"
+    });
+});
 </script>
 
 <script language="javascript">

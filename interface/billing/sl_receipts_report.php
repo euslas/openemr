@@ -27,6 +27,7 @@ require_once($GLOBALS['srcdir'].'/options.inc.php');
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
 require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 
+$DateFormat = DateFormatRead();
   // This determines if a particular procedure code corresponds to receipts
   // for the "Clinic" column as opposed to receipts for the practitioner.  Each
   // practice will have its own policies in this regard, so you'll probably
@@ -196,21 +197,15 @@ function sel_diagnosis() {
 			   <?php xl('From','e'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php  echo $form_from_date; ?>'
-				title='Date of appointments mm/dd/yyyy' >
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php xl('Click here to choose a date','e'); ?>'>
+			   <input type='text' name='form_from_date' id="form_from_date" size='10'
+                      value='<?= htmlspecialchars(oeFormatShortDate($form_from_date)); ?>' title='Date of appointments mm/dd/yyyy' >
 			</td>
 			<td class='label'>
 			   <?php xl('To','e'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php  echo $form_to_date; ?>'
-				title='Optional end date mm/dd/yyyy' >
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php xl('Click here to choose a date','e'); ?>'>
+			   <input type='text' name='form_to_date' id="form_to_date" size='10'
+                      value='<?= htmlspecialchars(oeFormatShortDate($form_to_date)); ?>' title='Optional end date mm/dd/yyyy' >
 			</td>
 			<td>&nbsp;</td>
 		</tr>
@@ -543,7 +538,7 @@ function sel_diagnosis() {
    <?php echo $docnameleft; $docnameleft = "&nbsp;" ?>
   </td>
   <td class="detail">
-   <?php echo oeFormatShortDate($row['transdate']) ?>
+   <?= date(DateFormatRead(true) . ' H:i:s', $row['transdate']); ?>
   </td>
 <?php if ($form_procedures) { ?>
   <td class="detail">
@@ -634,14 +629,18 @@ function sel_diagnosis() {
 
 <!-- stuff for the popup calendar -->
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.js"></script>
-<?php require_once($GLOBALS['srcdir'].'/dynarch_calendar_en.inc.php'); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar_setup.js"></script>
-
-<script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+    });
 </script>
-
 </html>

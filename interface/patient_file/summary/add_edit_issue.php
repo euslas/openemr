@@ -247,8 +247,8 @@ if ($_POST['form_save']) {
    if ($i++ == $_POST['form_type']) $text_type = $key;
   }
 
-  $form_begin = fixDate($_POST['form_begin'], '');
-  $form_end   = fixDate($_POST['form_end'], '');
+  $form_begin = $_POST['form_begin'];
+  $form_end   = $_POST['form_end'];
 
   if ($text_type == 'football_injury') {
     $form_injury_part = $_POST['form_injury_part'];
@@ -260,13 +260,12 @@ if ($_POST['form_save']) {
   }
 
   if ($issue) {
-
    $query = "UPDATE lists SET " .
     "type = '"        . add_escape_custom($text_type)                  . "', " .
     "title = '"       . add_escape_custom($_POST['form_title'])        . "', " .
     "comments = '"    . add_escape_custom($_POST['form_comments'])     . "', " .
-    "begdate = "      . QuotedOrNull($form_begin)   . ", "  .
-    "enddate = "      . QuotedOrNull($form_end)     . ", "  .
+    "begdate = "      . QuotedOrNull(prepareDateBeforeSave($form_begin)) . ", "  .
+    "enddate = "      . QuotedOrNull(prepareDateBeforeSave($form_end))    . ", "  .
     "returndate = "   . QuotedOrNull($form_return)  . ", "  .
     "diagnosis = '"   . add_escape_custom($_POST['form_diagnosis'])    . "', " .
     "occurrence = '"  . add_escape_custom($_POST['form_occur'])        . "', " .
@@ -305,8 +304,8 @@ if ($_POST['form_save']) {
     "'" . add_escape_custom($_POST['form_title'])       . "', " .
     "1, "                            .
     "'" . add_escape_custom($_POST['form_comments'])    . "', " .
-    QuotedOrNull($form_begin)        . ", "  .
-    QuotedOrNull($form_end)        . ", "  .
+       QuotedOrNull(prepareDateBeforeSave($form_begin))       . ", "  .
+       QuotedOrNull(prepareDateBeforeSave($form_end))     . ", "  .
     QuotedOrNull($form_return)       . ", "  .
     "'" . add_escape_custom($_POST['form_diagnosis'])   . "', " .
     "'" . add_escape_custom($_POST['form_occur'])       . "', " .

@@ -28,6 +28,30 @@ function oeFormatDateForPrintReport($date)
     }
 }
 
+function prepareDateBeforeSave($date, $withTime = false)
+{
+    if (!$withTime) {
+        $dmy = preg_split("'[/.-]'", $date);
+        if ($GLOBALS['date_display_format'] == 1) {
+            return sprintf("%04u-%02u-%02u", $dmy[2], $dmy[0], $dmy[1]);
+        } elseif ($GLOBALS['date_display_format'] == 2) {
+            return sprintf("%04u-%02u-%02u", $dmy[2], $dmy[1], $dmy[0]);
+        } else {
+            return $date;
+        }
+    } else {
+        $dmy = preg_split("'[/.: -]'", $date);
+        if ($GLOBALS['date_display_format'] == 1) {
+            return sprintf("%04u-%02u-%02u %02u:%02u:%02u", $dmy[2], $dmy[0], $dmy[1], $dmy[3], $dmy[4], $dmy[5]);
+        } elseif ($GLOBALS['date_display_format'] == 2) {
+            return sprintf("%04u-%02u-%02u %02u:%02u:%02u", $dmy[2], $dmy[1], $dmy[0], $dmy[3], $dmy[4], $dmy[5]);
+        } else {
+            return $date;
+        }
+    }
+
+}
+
 function oeFormatShortDate($date='today') {
   if ($date === 'today') $date = date('Y-m-d');
   if (strlen($date) == 10) {

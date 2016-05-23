@@ -21,7 +21,7 @@ if (isset($_GET['mode'])) {
 	 * WHEN BACK IS CLICKED, ANOTHER ITEM GETS ADDED
 	 */
 	
-	if ($_GET['mode'] == "add") {		
+	if ($_GET['mode'] == "add") {
         $sql = "REPLACE INTO immunizations set 
                       id = ?,
                       administered_date = if(?,?,NULL),  
@@ -44,31 +44,35 @@ if (isset($_GET['mode'])) {
 					  route = ?,
 					  administration_site = ? ,
                                           completion_status = ?";
-	$sqlBindArray = array(
-	             trim($_GET['id']),
-		     trim($_GET['administered_date']), trim($_GET['administered_date']),
-		     trim($_GET['form_immunization_id']),
-		     trim($_GET['cvx_code']),
-		     trim($_GET['manufacturer']),
-		     trim($_GET['lot_number']),
-		     trim($_GET['administered_by_id']), trim($_GET['administered_by_id']),
-		     trim($_GET['administered_by']), trim($_GET['administered_by']),
-		     trim($_GET['education_date']), trim($_GET['education_date']),
-		     trim($_GET['vis_date']), trim($_GET['vis_date']),
-		     trim($_GET['note']),
-		     $pid,
-		     $_SESSION['authId'],
-		     $_SESSION['authId'],
-			 trim($_GET['immuniz_amt_adminstrd']),
-			 trim($_GET['form_drug_units']),
-			 trim($_GET['immuniz_exp_date']), trim($_GET['immuniz_exp_date']),
-			 trim($_GET['immuniz_route']),
-			 trim($_GET['immuniz_admin_ste']),
-                         trim($_GET['immuniz_completion_status'])
-		     );
+        $sqlBindArray = [
+            trim($_GET['id']),
+            prepareDateBeforeSave(trim($_GET['administered_date'])),
+            prepareDateBeforeSave(trim($_GET['administered_date'])),
+            trim($_GET['form_immunization_id']),
+            trim($_GET['cvx_code']),
+            trim($_GET['manufacturer']),
+            trim($_GET['lot_number']),
+            trim($_GET['administered_by_id']),
+            trim($_GET['administered_by_id']),
+            trim($_GET['administered_by']),
+            trim($_GET['administered_by']),
+            prepareDateBeforeSave(trim($_GET['education_date'])),
+            prepareDateBeforeSave(trim($_GET['education_date'])),
+            prepareDateBeforeSave(trim($_GET['vis_date'])),
+            prepareDateBeforeSave(trim($_GET['vis_date'])),
+            trim($_GET['note']),
+            $pid,
+            $_SESSION['authId'],
+            $_SESSION['authId'],
+            trim($_GET['immuniz_amt_adminstrd']),
+            trim($_GET['form_drug_units']),
+            prepareDateBeforeSave(trim($_GET['immuniz_exp_date'])),
+            prepareDateBeforeSave(trim($_GET['immuniz_exp_date'])),
+            trim($_GET['immuniz_route']),
+            trim($_GET['immuniz_admin_ste']),
+            trim($_GET['immuniz_completion_status'])
+        ];
         sqlStatement($sql,$sqlBindArray);
-        $administered_date=date('Y-m-d H:i');
-		$education_date=date('Y-m-d');
         $immunization_id=$cvx_code=$manufacturer=$lot_number=$administered_by_id=$note=$id="";
         $administered_by=$vis_date="";
 		
@@ -265,7 +269,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
           <td><table border="0">
      <tr>
        <td><input type='text' size='14' name="administered_date" id="administered_date"
-    		value='<?php echo $administered_date ? htmlspecialchars( oeFormatShortDate($administered_date), ENT_QUOTES) : date(str_replace('%','',$DateFormat.' H:i')); ?>'
+    		value='<?php echo $administered_date ? date(DateFormatRead(true) . ' H:i', strtotime(text($administered_date))) : date(str_replace('%','',$DateFormat.' H:i')); ?>'
     		title='<?php echo htmlspecialchars( xl('yyyy-mm-dd Hours(24):minutes'), ENT_QUOTES); ?>'
     		onKeyUp='datekeyup(this,mypcc)' onBlur='dateblur(this,mypcc);'
     		/>
@@ -286,7 +290,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
         <tr>
           <td align="right"><span class="text"><?php echo htmlspecialchars( xl('Immunization Expiration Date'), ENT_NOQUOTES); ?></span></td>
           <td class='text'><input type='text' size='10' name="immuniz_exp_date" id="immuniz_exp_date"
-    value='<?php echo $immuniz_exp_date ? htmlspecialchars( oeFormatShortDate($immuniz_exp_date), ENT_QUOTES) : ''; ?>'
+    value='<?php echo $immuniz_exp_date ? date(DateFormatRead(true), strtotime(text($immuniz_exp_date))) : ''; ?>'
     title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc);'
     />
@@ -337,7 +341,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
               <?php echo htmlspecialchars( xl('Date Immunization Information Statements Given'), ENT_NOQUOTES); ?>          </td>
           <td>
             <input type='text' size='10' name="education_date" id="education_date"
-                    value='<?php echo $education_date? htmlspecialchars( $education_date, ENT_QUOTES) : oeFormatShortDate(date('Y-m-d')); ?>'
+                    value='<?php echo $education_date ? date(DateFormatRead(true), strtotime(text($education_date))) : oeFormatShortDate(date('Y-m-d')); ?>'
                     title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>'
                     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc);'
             />
@@ -352,7 +356,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
               (<a href="http://www.cdc.gov/vaccines/pubs/vis/default.htm" title="<?php echo htmlspecialchars( xl('Help'), ENT_QUOTES); ?>" target="_blank">?</a>)          </td>
           <td>
             <input type='text' size='10' name="vis_date" id="vis_date"
-                    value='<?php echo $vis_date ? htmlspecialchars( $vis_date, ENT_QUOTES) : oeFormatShortDate(date('Y-m-d')); ?>'
+                    value='<?php echo $vis_date ? date(DateFormatRead(true), strtotime(text($vis_date))) : oeFormatShortDate(date('Y-m-d')); ?>'
                     title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>'
                     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc);'
             />
@@ -477,18 +481,18 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
 			} else {
 				$administered_date_summary = "";
 			}			
-			echo "<td>" . $del_tag_open . htmlspecialchars( $administered_date_summary, ENT_NOQUOTES) . $del_tag_close . "</td>";
+			echo "<td>" . $del_tag_open .text(date(DateFormatRead(true) . ' H:i:s', strtotime($administered_date_summary))) . $del_tag_close . "</td>";
                         if ($row["amount_administered"] > 0) {
 			        echo "<td>" . $del_tag_open . htmlspecialchars( $row["amount_administered"] . " " . generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['amount_administered_unit']) , ENT_NOQUOTES) . $del_tag_close . "</td>";
                         }
                         else {
                                echo "<td>&nbsp</td>";
                         }
-			echo "<td>" . $del_tag_open . text($row["expiration_date"]) . $del_tag_close . "</td>";
+			echo "<td>" . $del_tag_open . text(date(DateFormatRead(true) . ' H:i:s', strtotime($row["expiration_date"]))) . $del_tag_close . "</td>";
                         echo "<td>" . $del_tag_open . htmlspecialchars( $row["manufacturer"], ENT_NOQUOTES) . $del_tag_close . "</td>";
             echo "<td>" . $del_tag_open . htmlspecialchars( $row["lot_number"], ENT_NOQUOTES) . $del_tag_close . "</td>";
             echo "<td>" . $del_tag_open . htmlspecialchars( $row["administered_by"], ENT_NOQUOTES) . $del_tag_close . "</td>";
-            echo "<td>" . $del_tag_open . htmlspecialchars( $row["education_date"], ENT_NOQUOTES) . $del_tag_close . "</td>";
+            echo "<td>" . $del_tag_open . text(date(DateFormatRead(true) . ' H:i:s', strtotime($row["education_date"]))) . $del_tag_close . "</td>";
 			echo "<td>" . $del_tag_open . generate_display_field(array('data_type'=>'1','list_id'=>'drug_route'), $row['route']) . $del_tag_close . "</td>";			
 			echo "<td>" . $del_tag_open . generate_display_field(array('data_type'=>'1','list_id'=>'proc_body_site'), $row['administration_site']) . $del_tag_close . "</td>";
 			echo "<td>" . $del_tag_open . htmlspecialchars( $row["note"], ENT_NOQUOTES) . $del_tag_close . "</td>";

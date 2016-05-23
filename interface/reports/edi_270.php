@@ -26,30 +26,30 @@
 	include_once("$srcdir/calendar.inc");
 	include_once("$srcdir/edi.inc");
 
-	// Element data seperator		
+	// Element data seperator
 	$eleDataSep		= "*";
 
-	// Segment Terminator	
-	$segTer			= "~"; 	
+	// Segment Terminator
+	$segTer			= "~";
 
 	// Component Element seperator
-	$compEleSep		= "^"; 	
-	
-	// filter conditions for the report and batch creation 
+	$compEleSep		= "^";
 
-	$from_date		= fixDate($_POST['form_from_date'], date('Y-m-d'));
-	$to_date		= fixDate($_POST['form_to_date'], date('Y-m-d'));
-	$form_facility	= $_POST['form_facility'] ? $_POST['form_facility'] : '';
-	$form_provider	= $_POST['form_users'] ? $_POST['form_users'] : '';
-	$exclude_policy = $_POST['removedrows'] ? $_POST['removedrows'] : '';
-	$X12info		= $_POST['form_x12'] ? explode("|",$_POST['form_x12']) : '';
+	// filter conditions for the report and batch creation
+
+$from_date = fixNewDate($_POST['form_from_date'], date('Y-m-d'));
+$to_date = fixNewDate($_POST['form_to_date'], date('Y-m-d'));
+$form_facility	= $_POST['form_facility'] ? $_POST['form_facility'] : '';
+$form_provider	= $_POST['form_users'] ? $_POST['form_users'] : '';
+$exclude_policy = $_POST['removedrows'] ? $_POST['removedrows'] : '';
+$X12info		= $_POST['form_x12'] ? explode("|",$_POST['form_x12']) : '';
 
 	//Set up the sql variable binding array (this prevents sql-injection attacks)
 	$sqlBindArray = array();
 
 	$where  = "e.pc_pid IS NOT NULL AND e.pc_eventDate >= ?";
 	array_push($sqlBindArray, $from_date);
-	
+
 	//$where .="and e.pc_eventDate = (select max(pc_eventDate) from openemr_postcalendar_events where pc_aid = d.id)";
 
 	if ($to_date) {
@@ -118,19 +118,19 @@
 							LEFT JOIN insurance_companies as c ON (c.id = i.provider)
 							WHERE %s ",	$where );
 
-	// Run the query 
+	// Run the query
 	$res			= sqlStatement($query, $sqlBindArray);
-	
-	// Get the facilities information 
+
+	// Get the facilities information
 	$facilities		= getUserFacilities($_SESSION['authId']);
 
-	// Get the Providers information 
+	// Get the Providers information
 	$providers		= getUsernames();
 
-	//Get the x12 partners information 
+	//Get the x12 partners information
 	$clearinghouses	= getX12Partner();
-		
-		
+
+
 	if (isset($_POST['form_savefile']) && !empty($_POST['form_savefile']) && $res) {
 		header('Content-Type: text/plain');
 		header(sprintf('Content-Disposition: attachment; filename="elig-270..%s.%s.txt"',
@@ -138,7 +138,7 @@
 			$to_date
 		));
 		print_elig($res,$X12info,$segTer,$compEleSep);
-		exit; 
+		exit;
 	}
 ?>
 
@@ -194,28 +194,28 @@
 			var stringDelete = "<?php echo htmlspecialchars( xl('Do you want to remove this record?'), ENT_QUOTES); ?>?";
 			var stringBatch	 = "<?php echo htmlspecialchars( xl('Please select X12 partner, required to create the 270 batch'), ENT_QUOTES); ?>";
 
-			// for form refresh 
+			// for form refresh
 
 			function refreshme() {
 				document.forms[0].submit();
 			}
 
-			//  To delete the row from the reports section 
+			//  To delete the row from the reports section
 			function deletetherow(id){
 				var suredelete = confirm(stringDelete);
 				if(suredelete == true){
 					document.getElementById('PR'+id).style.display="none";
 					if(document.getElementById('removedrows').value == ""){
-						document.getElementById('removedrows').value = "'" + id + "'"; 
+						document.getElementById('removedrows').value = "'" + id + "'";
 					}else{
-						document.getElementById('removedrows').value = document.getElementById('removedrows').value + ",'" + id + "'"; 
-					
+						document.getElementById('removedrows').value = document.getElementById('removedrows').value + ",'" + id + "'";
+
 					}
 				}
-				
+
 			}
 
-			//  To validate the batch file generation - for the required field [clearing house/x12 partner] 
+			//  To validate the batch file generation - for the required field [clearing house/x12 partner]
 			function validate_batch()
 			{
 				if(document.getElementById('form_x12').value=='')
@@ -227,13 +227,13 @@
 				{
 					document.getElementById('form_savefile').value = "true";
 					document.theform.submit();
-					
+
 				}
 
 
 			}
 
-			// To Clear the hidden input field 
+			// To Clear the hidden input field
 
 			function validate_policy()
 			{
@@ -242,14 +242,14 @@
 				return true;
 			}
 
-			// To toggle the clearing house empty validation message 
+			// To toggle the clearing house empty validation message
 			function toggleMessage(id,x12){
-				
+
 				var spanstyle = new String();
 
 				spanstyle		= document.getElementById(id).style.visibility;
 				selectoption	= document.getElementById(x12).value;
-				
+
 				if(selectoption != '')
 				{
 					document.getElementById(id).style.visibility = "hidden";
@@ -275,7 +275,7 @@
 
 		<div id="report_parameters_daterange">
 			<?php echo htmlspecialchars( date("d F Y", strtotime($form_from_date)), ENT_NOQUOTES) .
-				" &nbsp; " . htmlspecialchars( xl('to'), ENT_NOQUOTES) . 
+				" &nbsp; " . htmlspecialchars( xl('to'), ENT_NOQUOTES) .
 				"&nbsp; ". htmlspecialchars( date("d F Y", strtotime($form_to_date)), ENT_NOQUOTES); ?>
 		</div>
 
@@ -309,7 +309,7 @@
 										</td>
 										<td>&nbsp;</td>
 									</tr>
-									
+
 									<tr>
 										<td class='label'>
 											<?php echo htmlspecialchars( xl('Facility'), ENT_NOQUOTES); ?>:
@@ -333,7 +333,7 @@
 										<td>&nbsp;
 										</td>
 									</tr>
-									
+
 									<tr>
 										<td class='label'>
 											<?php echo htmlspecialchars( xl('X12 Partner'), ENT_NOQUOTES); ?>:
@@ -341,18 +341,18 @@
 										<td colspan='5'>
 											<select name='form_x12' id='form_x12' onchange='return toggleMessage("emptyVald","form_x12");' >
 														<option value=''>--<?php echo htmlspecialchars( xl('select'), ENT_NOQUOTES); ?>--</option>
-														<?php 
+														<?php
 															if(isset($clearinghouses) && !empty($clearinghouses))
 															{
 																foreach($clearinghouses as $clearinghouse): ?>
 																	<option value='<?php echo htmlspecialchars( $clearinghouse['id']."|".$clearinghouse['id_number']."|".$clearinghouse['x12_sender_id']."|".$clearinghouse['x12_receiver_id']."|".$clearinghouse['x12_version']."|".$clearinghouse['processing_format'], ENT_QUOTES); ?>'
 																		<?php echo $clearinghouse['id'] == $X12info[0] ? " selected " : null; ?>
 																	><?php echo htmlspecialchars( $clearinghouse['name'], ENT_NOQUOTES); ?></option>
-														<?php	endforeach; 
+														<?php	endforeach;
 															}
-															
+
 														?>
-												</select> 
+												</select>
 												<span id='emptyVald' style='color:red;font-size:12px;'> * <?php echo htmlspecialchars( xl('Clearing house info required for EDI 270 batch creation.'), ENT_NOQUOTES); ?></span>
 										</td>
 									</tr>
@@ -369,14 +369,14 @@
 												<?php echo htmlspecialchars( xl('Refresh'), ENT_NOQUOTES); ?>
 											</span>
 											</a>
-																						
+
 											<a href='#' class='css_button' onclick='return validate_batch();'>
 												<span>
 													<?php echo htmlspecialchars( xl('Create batch'), ENT_NOQUOTES); ?>
 													<input type='hidden' name='form_savefile' id='form_savefile' value=''></input>
 												</span>
 											</a>
-											
+
 										</div>
 									</td>
 								</tr>
@@ -384,7 +384,7 @@
 						</td>
 					</tr>
 				</table>
-			</div> 
+			</div>
 
 			<div class='text'>
 				<?php echo htmlspecialchars( xl('Please choose date range criteria above, and click Refresh to view results.'), ENT_NOQUOTES); ?>

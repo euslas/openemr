@@ -164,7 +164,7 @@ CREATE TABLE `batchcom` (
   `msg_type` varchar(60) default NULL,
   `msg_subject` varchar(255) default NULL,
   `msg_text` mediumtext,
-  `msg_date_sent` datetime NOT NULL default '0000-00-00 00:00:00',
+  `msg_date_sent` datetime NOT NULL default '1000-01-01 00:00:00',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
@@ -949,14 +949,12 @@ CREATE TABLE `drug_inventory` (
   `on_hand` int(11) NOT NULL default '0',
   `warehouse_id` varchar(31) NOT NULL DEFAULT '',
   `vendor_id` bigint(20) NOT NULL DEFAULT 0,
-  `last_notify` date NOT NULL default '0000-00-00',
+  `last_notify` date NOT NULL default '1000-01-01',
   `destroy_date` date default NULL,
   `destroy_method` varchar(255) default NULL,
   `destroy_witness` varchar(255) default NULL,
   `destroy_notes` varchar(255) default NULL,
-  PRIMARY KEY  (`inventory_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 ;
-
+  PRIMARY KEY  (`inventory_id`) ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 -- --------------------------------------------------------
 
 -- 
@@ -1014,7 +1012,7 @@ CREATE TABLE `drugs` (
   `on_order` int(11) NOT NULL default '0',
   `reorder_point` float NOT NULL DEFAULT 0.0,
   `max_level` float NOT NULL DEFAULT 0.0,
-  `last_notify` date NOT NULL default '0000-00-00',
+  `last_notify` date NOT NULL default '1000-01-01',
   `reactions` text,
   `form` int(3) NOT NULL default '0',
   `size` float unsigned NOT NULL default '0',
@@ -2505,7 +2503,7 @@ CREATE TABLE `insurance_data` (
   `subscriber_employer_country` varchar(255) default NULL,
   `subscriber_employer_city` varchar(255) default NULL,
   `copay` varchar(255) default NULL,
-  `date` date NOT NULL default '0000-00-00',
+  `date` date NOT NULL default '1000-01-01',
   `pid` bigint(20) NOT NULL default '0',
   `subscriber_sex` varchar(25) default NULL,
   `accept_assignment` varchar(5) NOT NULL DEFAULT 'TRUE',
@@ -4794,8 +4792,8 @@ CREATE TABLE `openemr_postcalendar_events` (
   `pc_counter` mediumint(8) unsigned default '0',
   `pc_topic` int(3) NOT NULL default '1',
   `pc_informant` varchar(20) default NULL,
-  `pc_eventDate` date NOT NULL default '0000-00-00',
-  `pc_endDate` date NOT NULL default '0000-00-00',
+  `pc_eventDate` date NOT NULL default '1000-01-01',
+  `pc_endDate` date NOT NULL default '1000-01-01',
   `pc_duration` bigint(20) NOT NULL default '0',
   `pc_recurrtype` int(1) NOT NULL default '0',
   `pc_recurrspec` text,

@@ -25,8 +25,8 @@ $PROPLOGIC = true;
 //
 // if (! acl_check('acct', 'rep')) die("Unauthorized access.");
 
-$from_date = fixDate($_POST['form_from_date']);
-$to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
+$from_date = fixNewDate($_POST['form_from_date']);
+$to_date   = fixNewDate($_POST['form_to_date'], date('Y-m-d'));
 $form_by   = $_POST['form_by'];
 ?>
 <html>
@@ -114,8 +114,8 @@ $form_by   = $_POST['form_by'];
  </tr>
 <?php 
  if ($_POST['form_refresh']) {
-  $from_date = fixDate($_POST['form_from_date']);
-  $to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
+  $from_date = fixNewDate($_POST['form_from_date']);
+  $to_date   = fixNewDate($_POST['form_to_date'], date('Y-m-d'));
   $areport = array();
 
   $eres = sqlStatement("SELECT e.pc_eid, e.pc_apptstatus, " .
@@ -126,13 +126,13 @@ $form_by   = $_POST['form_by'];
     "JOIN openemr_postcalendar_categories AS c ON " .
     "c.pc_catdesc LIKE 'Squad=%' AND c.pc_catid = e.pc_catid " .
     "WHERE ((e.pc_endDate >= '$from_date' AND e.pc_eventDate <= '$to_date') OR " .
-    "(e.pc_endDate = '0000-00-00' AND e.pc_eventDate >= '$from_date' AND " .
+    "(e.pc_endDate = '1000-01-01' AND e.pc_eventDate >= '$from_date' AND " .
     "e.pc_eventDate <= '$to_date'))");
 
   while ($erow = sqlFetchArray($eres)) {
     $estart = $erow['pc_eventDate'];
     if ($estart < $from_date) $estart = $from_date;
-    $eend = ($erow['pc_endDate'] > '0000-00-00') ? $erow['pc_endDate'] : $erow['pc_eventDate'];
+    $eend = ($erow['pc_endDate'] > '1000-01-01') ? $erow['pc_endDate'] : $erow['pc_eventDate'];
     if ($eend > $to_date) $eend = $to_date;
     $time = mktime(0, 0, 0, substr($estart, 5, 2),
       substr($estart, 8, 2), substr($estart, 0, 4));

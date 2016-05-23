@@ -50,7 +50,7 @@ updatePatientData($pid, $newdata['patient_data']);
 updateEmployerData($pid, $newdata['employer_data']);
 
 $i1dob = fixDate(formData("i1subscriber_DOB"));
-$i1date = fixDate(formData("i1effective_date"), date('Y-m-d'));
+$i1date = fixNewDate(formData("i1effective_date"), date('Y-m-d'));
 
 newInsuranceData(
   $pid,
@@ -85,7 +85,7 @@ newInsuranceData(
 );
 
 $i2dob = fixDate(formData("i2subscriber_DOB"));
-$i2date = fixDate(formData("i2effective_date"), date('Y-m-d'));
+$i2date = fixNewDate(formData("i2effective_date"), date('Y-m-d'));
 
 newInsuranceData(
   $pid,
@@ -120,7 +120,7 @@ newInsuranceData(
 );
 
 $i3dob  = fixDate(formData("i3subscriber_DOB"));
-$i3date = fixDate(formData("i3effective_date"), date('Y-m-d'));
+$i3date = fixNewDate(formData("i3effective_date"), date('Y-m-d'));
 
 newInsuranceData(
   $pid,

@@ -257,9 +257,9 @@ elseif (substr($GLOBALS['ledger_begin_date'],0,1) == 'D') {
 
 $form_from_date = date('Y-m-d', $last_year);
 if($_REQUEST['form_from_date']) {
-  $form_from_date = fixDate($_REQUEST['form_from_date'], $last_year);
+  $form_from_date = fixNewDate($_REQUEST['form_from_date'], $last_year);
 }
-$form_to_date   = fixDate($_REQUEST['form_to_date']  , date('Y-m-d'));
+$form_to_date   = fixNewDate($_REQUEST['form_to_date']  , date('Y-m-d'));
 $form_facility  = $_REQUEST['form_facility'];
 $form_provider  = $_REQUEST['form_provider'];
 $form_patient   = $_REQUEST['form_patient'];
